@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 
 class ImageSlideAdapter(private val context: Context, private var imageList: ArrayList<String>) : PagerAdapter() {
     override fun getCount(): Int {
-        return imageList.size
+        return imageList.size - 1
     }
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
@@ -22,7 +22,7 @@ class ImageSlideAdapter(private val context: Context, private var imageList: Arr
         val view: View =  (context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(R.layout.image_slider_item, null)
         val ivImages = view.findViewById<ImageView>(R.id.iv_images)
 
-        imageList[position].let {
+        imageList[position + 1].let {
             Glide.with(context)
                 .load("https://img.youtube.com/vi/$it/hqdefault.jpg")
                 .into(ivImages);

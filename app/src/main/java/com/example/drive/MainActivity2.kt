@@ -4,14 +4,28 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
+import android.widget.SearchView
+import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
-import com.bumptech.glide.Glide
+import com.chaquo.python.Python
+import com.chaquo.python.android.AndroidPlatform
+import com.example.drive.SharedData.observableArray
 import com.example.drive.databinding.ActivityMain2Binding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.gson.Gson
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import me.relex.circleindicator.CircleIndicator
+import okhttp3.Call
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 class MainActivity2 : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
@@ -20,6 +34,7 @@ class MainActivity2 : AppCompatActivity() {
     lateinit var indicator: CircleIndicator
     private lateinit var binding: ActivityMain2Binding
     val db = Firebase.firestore
+    var arrayList = arrayListOf("")
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,68 +42,62 @@ class MainActivity2 : AppCompatActivity() {
         binding = ActivityMain2Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var arrayList = arrayListOf("olQrehXegro","Q9WMfd96qVo","c1ICgOqhZq4","rGUv7hMqo_w","byJgRDFdUj0")
-
-        val Movies = db.document("/CBSE/CBSE")
-        Movies.get()
+        val links = db.document("/videoLinks/links")
+        links.get()
             .addOnSuccessListener { document ->
                 if (document != null && document.data!=null){
-                    //arrayList = document.data as ArrayList<String>
+                    document.data!!.keys
+                    arrayList = document.data!!["arr1"] as ArrayList<String>
+                    initialize(arrayList)
+                    binding.recyclerView2.layoutManager = LinearLayoutManager(this)
+                    val adapter = video_list_adapter(this, document.data)
+                    binding.recyclerView2.adapter = adapter
+
                 }
             }
 
-        Glide.with(this)
-            .load("https://img.youtube.com/vi/${arrayList[0]}/hqdefault.jpg")
-            .into(binding.noidaButton)
+        val searchView = findViewById<SearchView>(R.id.searchView)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query != null) {
+                    val regex = Regex("\\b\\w+\\b")
+                    val matches = regex.findAll(query)
+                    val result = matches.map { it.value }.joinToString("+")
+                    sumbit(result)
+                }
 
-        Glide.with(this)
-            .load("https://img.youtube.com/vi/${arrayList[1]}/hqdefault.jpg")
-            .into(binding.ghaziabadButton)
+                return true
+            }
 
-        Glide.with(this)
-            .load("https://img.youtube.com/vi/${arrayList[2]}/hqdefault.jpg")
-            .into(binding.newDelhiButton)
+            override fun onQueryTextChange(newText: String?): Boolean {
 
-        Glide.with(this)
-            .load("https://img.youtube.com/vi/${arrayList[3]}/hqdefault.jpg")
-            .into(binding.gurgaonButton)
+                return true
+            }
+        })
 
+//        auth = FirebaseAuth.getInstance()
+//        auth.signOut()
+
+//        auth = FirebaseAuth.getInstance()
+//        signOutBtn = findViewById(R.id.signOutBtn)
+//
+//        signOutBtn.setOnClickListener {
+//
+//            startActivity(Intent(this, SignInEmail::class.java))
+//        }
+
+    }
+
+    private fun sumbit(query: String?) {
+        SharedData.query = query!!
+        startActivity(Intent(this,SearchResult::class.java))
+    }
+
+    private fun initialize(arrayList: ArrayList<String>) {
         viewPagerAdapter = ImageSlideAdapter(this,arrayList)
         findViewById<ViewPager>(R.id.viewpager).adapter = viewPagerAdapter
         indicator = findViewById(R.id.indicator) as CircleIndicator
         indicator.setViewPager(findViewById(R.id.viewpager))
-
-        binding.noidaButton.setOnClickListener {
-            val intent2 = Intent(this, CustomUiActivity::class.java)
-            intent2.putExtra("youtubelink",arrayList[0])
-            startActivity(intent2)
-        }
-
-        binding.ghaziabadButton.setOnClickListener {
-            val intent2 = Intent(this, CustomUiActivity::class.java)
-            intent2.putExtra("youtubelink",arrayList[1])
-            startActivity(intent2)
-        }
-
-        binding.newDelhiButton.setOnClickListener {
-            val intent2 = Intent(this, CustomUiActivity::class.java)
-            intent2.putExtra("youtubelink",arrayList[2])
-            startActivity(intent2)
-        }
-
-        binding.gurgaonButton.setOnClickListener {
-            val intent2 = Intent(this, CustomUiActivity::class.java)
-            intent2.putExtra("youtubelink",arrayList[3])
-            startActivity(intent2)
-        }
-
-        auth = FirebaseAuth.getInstance()
-        signOutBtn = findViewById(R.id.signOutBtn)
-
-        signOutBtn.setOnClickListener {
-            auth.signOut()
-            startActivity(Intent(this, PhoneActivity::class.java))
-        }
-
     }
+
 }

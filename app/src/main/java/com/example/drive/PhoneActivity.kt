@@ -46,6 +46,9 @@ class PhoneActivity : AppCompatActivity() {
         }
 
         sendOTPBtn.setOnClickListener {
+
+            startActivity(Intent(this,MainActivity2::class.java))
+
             number = phoneNumberET.text.trim().toString()
             if (number.isNotEmpty()){
                 if (number.length == 10){
