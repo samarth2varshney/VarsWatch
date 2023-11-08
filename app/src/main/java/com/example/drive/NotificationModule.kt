@@ -1,6 +1,5 @@
 package com.example.drive
 
-import android.app.Notification.VISIBILITY_PRIVATE
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
