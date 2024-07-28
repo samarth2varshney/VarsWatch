@@ -19,24 +19,31 @@ class Login : AppCompatActivity() {
         setContentView(binding.root)
 
         if(auth.currentUser!=null){
-            startActivity(Intent(this,MainActivity2::class.java))
+            startActivity(Intent(this,MainActivity3::class.java))
         }
 
         binding.textView5.setOnClickListener {
             startActivity(Intent(this,createUser::class.java))
+            finish()
         }
 
-        val email = binding.etName2.text.toString()
-        val password = binding.etClass.text.toString()
+        binding.button7.setOnClickListener {
+            val email = binding.textView8.text.toString()
+            val password = binding.textView10.text.toString()
 
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val user = auth.currentUser
-                } else {
-                    Toast.makeText(applicationContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
+            if(RegistrationUtil.validationRegistrationInput(email,password,password))
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        startActivity(Intent(this,MainActivity3::class.java))
+                        finish()
+                    } else {
+                        Toast.makeText(applicationContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                    }
                 }
-            }
+            else
+                Toast.makeText(this,"enter valid credentials",Toast.LENGTH_LONG).show()
+        }
 
     }
 }

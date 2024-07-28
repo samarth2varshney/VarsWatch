@@ -2,7 +2,6 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
-    id 'com.chaquo.python'
 }
 
 android {
@@ -17,15 +16,6 @@ android {
         versionName "1.0"
         compileSdkPreview = "UpsideDownCake"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        ndk {
-            abiFilters "armeabi-v7a", "x86_64"
-        }
-        python {
-            version "3.11"
-        }
-        python {
-            buildPython "C:/Users/SAGAR/AppData/Local/Programs/Python/Python311/python.exe"
-        }
     }
 
     buildFeatures{
@@ -43,11 +33,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
-    }
-    sourceSets {
-        main {
-            python.srcDir "src/main/python"
-        }
     }
     buildFeatures {
         viewBinding true
@@ -69,6 +54,8 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'com.google.firebase:firebase-firestore-ktx:24.7.1'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.2'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -91,8 +78,7 @@ dependencies {
     //api calling library
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
 
-    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'com.google.code.gson:gson:2.10.1'
 
     implementation 'de.hdodenhof:circleimageview:3.1.0'
-
 }

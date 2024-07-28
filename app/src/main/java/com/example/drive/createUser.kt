@@ -20,16 +20,28 @@ class createUser : AppCompatActivity() {
 
         auth = Firebase.auth
 
+        if(auth.currentUser!=null){
+            startActivity(Intent(this,MainActivity3::class.java))
+        }
+
         binding.button7.setOnClickListener {
-            val email = binding.etName2.text.toString()
-            val password = binding.etClass.text.toString()
+            val email = binding.textView8.text.toString()
+            val password = binding.textView10.text.toString()
             if(RegistrationUtil.validationRegistrationInput(email,password,password))
-                auth.createUserWithEmailAndPassword(binding.etName2.text.toString(),binding.etClass.text.toString()).addOnCompleteListener{
+                auth.createUserWithEmailAndPassword(binding.textView8.text.toString(),binding.textView10.text.toString()).addOnCompleteListener{
                     if(it.isSuccessful){
-                        startActivity(Intent(this,MainActivity2::class.java))
+                        startActivity(Intent(this,MainActivity3::class.java))
+                        finish()
                         Toast.makeText(this,"Successfull",Toast.LENGTH_LONG).show()
                     }
                 }
+            else
+                Toast.makeText(this,"enter valid credentials",Toast.LENGTH_LONG).show()
+        }
+
+        binding.textView6.setOnClickListener {
+            startActivity(Intent(this,Login::class.java))
+            finish()
         }
 
     }

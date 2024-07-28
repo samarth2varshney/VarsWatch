@@ -2,7 +2,6 @@ package com.example.drive
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +10,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-class search_video_adapter(private val context: Context, private val arr: List<Item>,
-) : RecyclerView.Adapter<search_video_adapter.ViewHolder>(){
+class history_video_adapter(private val context: Context, private val arr: ArrayList<video_info>?,
+) : RecyclerView.Adapter<history_video_adapter.ViewHolder>(){
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val image = itemView.findViewById<ImageView>(R.id.imageView3)
@@ -25,26 +24,21 @@ class search_video_adapter(private val context: Context, private val arr: List<I
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-        val video = arr[position]
-
         Glide.with(context)
-            .load(video.snippet.thumbnails.high.url)
+            .load("https://img.youtube.com/vi/${arr!![position].video_id}/hqdefault.jpg")
             .into(holder.image)
 
         holder.itemView.setOnClickListener {
-            Log.i("samarth",video.id.videoId)
             val intent2 = Intent(context, CustomUiActivity::class.java)
-            intent2.putExtra("youtubelink",video.id.videoId)
-            intent2.putExtra("youtubetitle",video.snippet.title)
+            intent2.putExtra("youtubelink",arr[position].video_id)
             context.startActivity(intent2)
         }
 
-        holder.title.text = video.snippet.title
+        holder.title.text = arr[position].title
 
     }
 
     override fun getItemCount(): Int {
-        return arr.size
+        return arr!!.size
     }
 }

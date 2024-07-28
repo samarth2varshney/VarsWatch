@@ -4,8 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.drive.databinding.ActivitySearchResultBinding
 import com.google.gson.Gson
@@ -25,12 +23,12 @@ class SearchResult : AppCompatActivity() {
         setContentView(binding.root)
 
         GlobalScope.launch {
-            makeApiCall(SharedData.query)
+            search(SharedData.query)
         }
 
     }
 
-    fun makeApiCall(query: String?) {
+    fun search(query: String?) {
         val client = OkHttpClient.Builder()
             .connectTimeout(90, TimeUnit.SECONDS)
             .readTimeout(90, TimeUnit.SECONDS)
@@ -38,7 +36,7 @@ class SearchResult : AppCompatActivity() {
             .build()
 
         val request = Request.Builder()
-            .url("http://192.168.137.42:8000/api/hello/?id=${query}")
+            .url("https://www.googleapis.com/youtube/v3/search?key=AIzaSyDayH1oCzyh6xr_DFUl3Jq2yLAFJZsB2B4&q=${query}&type=any&part=snippet&maxResults=30")
             .build()
 
         val call: Call = client.newCall(request)
@@ -48,9 +46,9 @@ class SearchResult : AppCompatActivity() {
             if (response.isSuccessful) {
                 val responseBody = response.body?.string()
                 val gson = Gson()
-                val stringArray: Array<video_info> = gson.fromJson(responseBody!!, Array<video_info>::class.java)
-                runOnUiThread{
-                    initialize(stringArray)
+                val result = gson.fromJson(responseBody!!, SearchResults::class.java)
+                runOnUiThread {
+                    initialize(result)
                 }
             } else {
                 Log.i("samarth","failed to fetch data")
@@ -60,11 +58,14 @@ class SearchResult : AppCompatActivity() {
         }
     }
 
-    private fun initialize(videoInfo: Array<video_info>) {
-        binding.loader.visibility = View.GONE
+    private fun initialize(videoInfo: SearchResults) {
+        Log.i("samarth",videoInfo.items.toString())
+        val filteredList = videoInfo.items.filter { it.id.videoId != null }.toList()
+//        for (i in filteredList){
+//            Log.i("samarth",i.id.toString())
+//        }
         binding.searchResultRecyclerView.layoutManager = LinearLayoutManager(this)
-        val arrayList = videoInfo!!.toList() as ArrayList<video_info>
-        val adapter = search_video_adapter(this, arrayList)
+        val adapter = search_video_adapter(this, filteredList)
         binding.searchResultRecyclerView.adapter = adapter
     }
 

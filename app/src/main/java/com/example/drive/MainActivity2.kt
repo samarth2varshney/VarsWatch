@@ -10,10 +10,7 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
-import com.chaquo.python.Python
-import com.chaquo.python.android.AndroidPlatform
 import com.example.drive.Query.getQuery
-import com.example.drive.SharedData.observableArray
 import com.example.drive.databinding.ActivityMain2Binding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
@@ -74,16 +71,11 @@ class MainActivity2 : AppCompatActivity() {
             }
         })
 
-//        auth = FirebaseAuth.getInstance()
-//        auth.signOut()
-
-//        auth = FirebaseAuth.getInstance()
-//        signOutBtn = findViewById(R.id.signOutBtn)
-//
-//        signOutBtn.setOnClickListener {
-//
-//            startActivity(Intent(this, SignInEmail::class.java))
-//        }
+        binding.textView6.setOnClickListener {
+            auth = FirebaseAuth.getInstance()
+            auth.signOut()
+            startActivity(Intent(this, Login::class.java))
+        }
 
     }
 

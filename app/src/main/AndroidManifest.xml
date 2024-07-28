@@ -20,8 +20,16 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="34">
         <activity
-            android:name=".Login"
+            android:name=".MainActivity3"
+            android:exported="true"
+            android:label="@string/title_activity_main3">
+        </activity>
+        <activity
+            android:name=".Home"
             android:exported="false" />
+        <activity
+            android:name=".Login"
+            android:exported="true"></activity>
         <activity
             android:name=".SearchResult"
             android:exported="false" />
