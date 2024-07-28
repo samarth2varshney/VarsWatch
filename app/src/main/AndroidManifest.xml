@@ -64,18 +64,6 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".OPTActivity"
-            android:exported="false"
-            android:theme="@style/NoActionBar" />
-        <activity
-            android:name=".MainActivity2"
-            android:exported="false"
-            android:theme="@style/NoActionBar" />
-        <activity
-            android:name=".PhoneActivity"
-            android:exported="true"
-            android:theme="@style/NoActionBar" />
 
         <receiver android:name=".MyReciver" />
     </application>
