@@ -20,7 +20,7 @@ class video_list_adapter(private val context: Context, private val map: MutableM
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.totry, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.video_list_item, parent, false)
         return ViewHolder(view)
     }
 
