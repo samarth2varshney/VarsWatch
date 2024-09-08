@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.drive.ui.home.video_list_adapter
 import com.example.varswatch.*
@@ -67,18 +68,14 @@ class HomeFragment : Fragment() {
             }
         })
 
-        binding.textView6.setOnClickListener {
-//            auth = FirebaseAuth.getInstance()
-//            auth.signOut()
-//            startActivity(Intent(requireContext(), Login::class.java))
-        }
-
         return root
     }
 
     private fun sumbit(query: String) {
         SharedData.query = query
-        startActivity(Intent(requireContext(), SearchResult::class.java))
+//        startActivity(Intent(requireContext(), SearchResult::class.java))
+        val controller = findNavController()
+        controller.navigate(R.id.searchFragment)
     }
 
     private fun initialize(arrayList: ArrayList<String>) {

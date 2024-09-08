@@ -4,9 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.drive.ui.search.search_video_adapter
+import com.example.varswatch.ui.search.search_video_adapter
 import com.example.varswatch.databinding.ActivitySearchResultBinding
-import com.example.varswatch.ui.search.SearchResultsDto
+import com.example.varswatch.data.SearchResultsDto
 import com.example.varswatch.util.SharedData
 import com.google.gson.Gson
 import kotlinx.coroutines.GlobalScope
@@ -31,6 +31,7 @@ class SearchResult : AppCompatActivity() {
     }
 
     fun search(query: String?) {
+
         val client = OkHttpClient.Builder()
             .connectTimeout(90, TimeUnit.SECONDS)
             .readTimeout(90, TimeUnit.SECONDS)

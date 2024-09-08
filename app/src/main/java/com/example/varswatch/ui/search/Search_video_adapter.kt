@@ -1,8 +1,7 @@
-package com.example.drive.ui.search
+package com.example.varswatch.ui.search
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,14 +11,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.varswatch.CustomUiActivity
 import com.example.varswatch.R
-import com.example.varswatch.ui.search.Item
+import com.example.varswatch.data.SearchResultsDto
 
-class search_video_adapter(private val context: Context, private val arr: List<Item>,
+class search_video_adapter(private val context: Context, private val arr: List<SearchResultsDto.Item>,
 ) : RecyclerView.Adapter<search_video_adapter.ViewHolder>(){
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val image = itemView.findViewById<ImageView>(R.id.imageView3)
-        val title = itemView.findViewById<TextView>(R.id.textView4)
+        val title = itemView.findViewById<TextView>(R.id.thumbnail)
+        val channelName = itemView.findViewById<TextView>(R.id.channel_name)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -36,7 +36,6 @@ class search_video_adapter(private val context: Context, private val arr: List<I
             .into(holder.image)
 
         holder.itemView.setOnClickListener {
-            Log.i("samarth",video.id.videoId)
             val intent2 = Intent(context, CustomUiActivity::class.java)
             intent2.putExtra("youtubelink",video.id.videoId)
             intent2.putExtra("youtubetitle",video.snippet.title)
@@ -44,6 +43,7 @@ class search_video_adapter(private val context: Context, private val arr: List<I
         }
 
         holder.title.text = video.snippet.title
+        holder.channelName.text = video.snippet.channelTitle
 
     }
 

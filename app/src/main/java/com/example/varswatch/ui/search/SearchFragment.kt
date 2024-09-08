@@ -1,32 +1,49 @@
-package com.example.drive.ui.search
+package com.example.varswatch.ui.search
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.varswatch.R
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.varswatch.data.SearchResultsDto
+import com.example.varswatch.databinding.FragmentSearchBinding
+import com.example.varswatch.util.SharedData
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = SearchFragment()
-    }
+    private var _binding: FragmentSearchBinding? = null
 
-    private lateinit var viewModel: SearchViewModel
+    private val binding get() = _binding!!
+
+    private val viewModel: SearchViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_search, container, false)
+    ): View {
+
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        val root = binding.root
+
+        viewModel.search(SharedData.query)
+
+        viewModel.searchResults.observe(viewLifecycleOwner) { searchResults ->
+
+            binding.searchResultRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+            val adapter = search_video_adapter(requireContext(), searchResults)
+            binding.searchResultRecyclerView.adapter = adapter
+
+        }
+
+        return root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
+    private fun initialize(videoInfo: SearchResultsDto) {
 
+    }
 }
