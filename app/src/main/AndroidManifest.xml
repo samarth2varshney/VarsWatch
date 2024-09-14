@@ -27,7 +27,7 @@
             android:name=".youtube_shared_videos.PlaylistExampleActivity"
             android:exported="false" />
         <activity
-            android:name=".CustomUiActivity"
+            android:name=".VideoPlayerActivity"
             android:exported="false"
             android:screenOrientation="landscape"
             android:supportsPictureInPicture="true"

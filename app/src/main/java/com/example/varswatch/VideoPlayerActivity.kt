@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.PictureInPictureParams
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -16,11 +17,11 @@ import com.example.varswatch.util.SharedData.mp
 import com.example.varswatch.util.SharedData.saveVideoInfoList
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
-class CustomUiActivity : AppCompatActivity() {
+class VideoPlayerActivity : AppCompatActivity() {
 
     private lateinit var notificationBuilder: NotificationCompat.Builder
     private lateinit var notificationManager: NotificationManagerCompat
-    private lateinit var youTubePlayerView:YouTubePlayerView
+    private lateinit var youtubePlayer: YoutubePlayer
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,23 +31,27 @@ class CustomUiActivity : AppCompatActivity() {
         notificationBuilder = NotificationModule.provideNotificationBuilder(applicationContext)
         notificationManager = NotificationModule.provideNotificationManager(applicationContext)
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED)
-            return
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED){
+            notificationManager.notify(1,notificationBuilder.build())
+        }
 
-        notificationManager.notify(1,notificationBuilder.build())
-
-        youTubePlayerView = findViewById(R.id.youtube_player_view)
-        val youtubelink = intent.getStringExtra("youtubelink").toString()
+        val youtubeLink = intent.getStringExtra("youtubelink").toString()
         val youtubeTitle = intent.getStringExtra("youtubetitle").toString()
 
-        if(!mp.containsKey(youtubelink)){
-            mp[youtubelink] = 1
-            val videoInfo = video_info(youtubelink,youtubeTitle)
+        if(!mp.containsKey(youtubeLink)){
+            mp[youtubeLink] = 1
+            val videoInfo = video_info(youtubeLink,youtubeTitle)
             SharedData.Array.add(videoInfo)
             saveVideoInfoList(applicationContext,"history")
         }
 
-        YoutubePlayer(youTubePlayerView,youtubelink)
+        youtubePlayer = YoutubePlayer()
+
+        youtubePlayer.youTubePlayerView = findViewById(R.id.youtube_player_view3)
+        youtubePlayer.youtubelink = youtubeLink
+
+        youtubePlayer.play()
+
     }
 
     private fun initPictureInPicture() {
@@ -59,6 +64,17 @@ class CustomUiActivity : AppCompatActivity() {
         }
     }
 
+    override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration) {
+        super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
+
+        if (!isInPictureInPictureMode) {
+            notificationManager.cancel(1)
+            youtubePlayer.youTubePlayerView.release()
+        }
+
+    }
+
+
     override fun onUserLeaveHint() {
         super.onUserLeaveHint()
         initPictureInPicture()
@@ -67,6 +83,7 @@ class CustomUiActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         notificationManager.cancel(1)
+        youtubePlayer.youTubePlayerView.release()
     }
 
 }

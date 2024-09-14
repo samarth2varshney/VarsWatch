@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.varswatch.CustomUiActivity
+import com.example.varswatch.VideoPlayerActivity
 import com.example.varswatch.R
 import com.example.varswatch.data.SearchResultsDto
 
@@ -36,7 +36,7 @@ class search_video_adapter(private val context: Context, private val arr: List<S
             .into(holder.image)
 
         holder.itemView.setOnClickListener {
-            val intent2 = Intent(context, CustomUiActivity::class.java)
+            val intent2 = Intent(context, VideoPlayerActivity::class.java)
             intent2.putExtra("youtubelink",video.id.videoId)
             intent2.putExtra("youtubetitle",video.snippet.title)
             context.startActivity(intent2)

@@ -43,7 +43,4 @@ class SearchFragment : Fragment() {
         return root
     }
 
-    private fun initialize(videoInfo: SearchResultsDto) {
-
-    }
 }

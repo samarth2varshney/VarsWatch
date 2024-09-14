@@ -77,8 +77,12 @@ dependencies {
     implementation (libs.retrofit)
     implementation (libs.converter.moshi)
 
+    //dependency injection
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+
+    //Permissions
+    implementation (libs.permissionx)
 
 }
 

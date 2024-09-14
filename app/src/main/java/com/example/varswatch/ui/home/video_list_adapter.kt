@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.varswatch.CustomUiActivity
+import com.example.varswatch.VideoPlayerActivity
 import com.example.varswatch.R
 
 class video_list_adapter(private val context: Context, private val map: MutableMap<String, Any>?,
@@ -62,7 +62,7 @@ class video_adapter(private val context: Context, private val arr: ArrayList<Str
             .into(holder.image)
 
         holder.itemView.setOnClickListener {
-            val intent2 = Intent(context, CustomUiActivity::class.java)
+            val intent2 = Intent(context, VideoPlayerActivity::class.java)
             intent2.putExtra("youtubelink",arr[position + 1])
             context.startActivity(intent2)
         }

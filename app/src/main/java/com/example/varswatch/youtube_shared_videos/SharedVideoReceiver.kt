@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.varswatch.CustomUiActivity
+import com.example.varswatch.VideoPlayerActivity
 import com.example.varswatch.R
 
 class SharedVideoReceiver : AppCompatActivity() {
@@ -35,7 +35,7 @@ class SharedVideoReceiver : AppCompatActivity() {
                 intent2.putExtra("youtubelink",youtubelink)
                 startActivity(intent2)
             }else{
-                val intent2 = Intent(this, CustomUiActivity::class.java)
+                val intent2 = Intent(this, VideoPlayerActivity::class.java)
                 intent2.putExtra("youtubelink",youtubelink)
                 startActivity(intent2)
             }
