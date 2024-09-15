@@ -48,7 +48,7 @@ class video_adapter(private val context: Context, private val arr: ArrayList<Str
 ) : RecyclerView.Adapter<video_adapter.ViewHolder>(){
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val image = itemView.findViewById<ImageView>(R.id.imageView3)
+        val image = itemView.findViewById<ImageView>(R.id.thumnailPicture)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

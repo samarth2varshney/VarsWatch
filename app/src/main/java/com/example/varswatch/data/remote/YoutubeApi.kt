@@ -12,7 +12,7 @@ interface YoutubeApi {
         @Query("id") videoId: String
     ): VideoData
 
-    @GET("search?key=${key}&type=any&part=snippet&maxResults=30")
+    @GET("search?key=${key}&type=any&part=snippet&maxResults=10")
     suspend fun search(
         @Query("q") query:String
     ) : SearchResultsDto

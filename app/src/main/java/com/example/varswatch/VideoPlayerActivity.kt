@@ -15,7 +15,6 @@ import com.example.drive.notification_module.NotificationModule
 import com.example.varswatch.util.SharedData
 import com.example.varswatch.util.SharedData.mp
 import com.example.varswatch.util.SharedData.saveVideoInfoList
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
 class VideoPlayerActivity : AppCompatActivity() {
 

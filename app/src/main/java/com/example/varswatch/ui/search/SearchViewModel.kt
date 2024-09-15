@@ -17,10 +17,8 @@ class SearchViewModel @Inject constructor(
     private val repository: YoutubeRepository
 ) : ViewModel() {
 
-    private var _searchResults = MutableLiveData<List<SearchResultsDto.Item>>()
-
-    // Expose the list as LiveData
-    val searchResults: LiveData<List<SearchResultsDto.Item>> get() = _searchResults
+    private var _videoInfo = MutableLiveData<HashMap<String,SearchResultsDto.Item>>()
+    val videoInfo: LiveData<HashMap<String,SearchResultsDto.Item>> get() = _videoInfo
 
     fun search(query: String) {
 
@@ -28,12 +26,12 @@ class SearchViewModel @Inject constructor(
             when(val result = repository.getSearchResults(query)){
                 is Resource.Success->{
                     if(result.data!=null){
-                        Log.i("samarth","search called")
-                        _searchResults.value = result.data.items.filter { it.id.videoId != null }.toList()
+                        _videoInfo.value = result.data.items.filter { it.id.videoId != null }.associateBy { it.id.videoId } as HashMap<String, SearchResultsDto.Item>
+//                        _videoInfo.value = result.data.items.associateBy { it.id.videoId }
                     }
                 }
                 is Resource.Error->{
-                    Log.i("samarth","error message ${result.message}")
+                    Log.i("SearchViewModel","error message ${result.message}")
                 }
             }
         }

@@ -21,9 +21,6 @@
         android:theme="@style/Theme.VarsWatch"
         tools:targetApi="31">
         <activity
-            android:name=".SearchResult"
-            android:exported="false" />
-        <activity
             android:name=".youtube_shared_videos.PlaylistExampleActivity"
             android:exported="false" />
         <activity
