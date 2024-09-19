@@ -1,6 +1,6 @@
 package com.example.varswatch.data.repository
 
-import com.example.varswatch.data.SearchResultsDto
+import com.example.varswatch.data.remote.SearchResultsDto
 import com.example.varswatch.data.remote.VideoData
 import com.example.varswatch.data.remote.YoutubeApi
 import com.example.varswatch.domain.repository.YoutubeRepository

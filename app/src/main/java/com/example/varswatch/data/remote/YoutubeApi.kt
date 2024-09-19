@@ -1,6 +1,5 @@
 package com.example.varswatch.data.remote
 
-import com.example.varswatch.data.SearchResultsDto
 import com.example.varswatch.domain.util.AppConstants.key
 import retrofit2.http.GET
 import retrofit2.http.Query

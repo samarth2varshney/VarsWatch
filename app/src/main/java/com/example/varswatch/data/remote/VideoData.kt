@@ -1,18 +1,13 @@
 package com.example.varswatch.data.remote
 
 data class VideoData(
-    val kind: String?,
-    val etag: String?,
     val items: List<Item?>?,
     val pageInfo: PageInfo?
 ) {
     data class Item(
-        val kind: String?,
-        val etag: String?,
         val id: String?,
         val snippet: Snippet?,
         val contentDetails: ContentDetails?,
-        val status: Status?,
         val statistics: Statistics?
     ) {
         data class Snippet(
@@ -84,15 +79,6 @@ data class VideoData(
             class ContentRating
         }
 
-        data class Status(
-            val uploadStatus: String?,
-            val privacyStatus: String?,
-            val license: String?,
-            val embeddable: Boolean?,
-            val publicStatsViewable: Boolean?,
-            val madeForKids: Boolean?
-        )
-
         data class Statistics(
             val viewCount: String?,
             val likeCount: String?,
@@ -106,3 +92,5 @@ data class VideoData(
         val resultsPerPage: Int?
     )
 }
+
+

@@ -2,13 +2,14 @@ package com.example.varswatch.ui.search
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.varswatch.VideoPlayerActivity
-import com.example.varswatch.data.SearchResultsDto
+import com.example.varswatch.data.remote.SearchResultsDto
 import com.example.varswatch.databinding.FragmentSearchBinding
 import com.example.varswatch.util.SharedData
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,16 +31,16 @@ class SearchFragment : Fragment(), SearchEpoxyController.OnItemClickListener {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         val root = binding.root
 
+        val controller = SearchEpoxyController(this)
+
         binding.apply {
+
+            epoxyRecyclerView.setController(controller)
 
             viewModel.search(SharedData.query)
 
-            viewModel.videoInfo.observe(viewLifecycleOwner) { it ->
-
-                val controller = SearchEpoxyController(this@SearchFragment)
-                epoxyRecyclerView.setController(controller)
+            viewModel.videoInfo.observe(viewLifecycleOwner) { it->
                 controller.setData(it)
-
             }
 
         }
