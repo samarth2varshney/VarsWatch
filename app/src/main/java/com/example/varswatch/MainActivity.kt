@@ -8,6 +8,9 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.varswatch.databinding.ActivityMainBinding
+import com.example.varswatch.util.SharedData.Array
+import com.example.varswatch.util.SharedData.getVideoInfoList
+import com.example.varswatch.util.SharedData.mp
 import com.example.varswatch.util.getNotificationPermission
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,6 +27,14 @@ class MainActivity : AppCompatActivity() {
 
         if (supportActionBar != null) {
             supportActionBar!!.hide();
+        }
+
+        Array = getVideoInfoList(applicationContext,"history")
+
+        mp["videoID"] = 1
+
+        for (video in Array) {
+            mp[video.video_id] = 1
         }
 
         val navView: BottomNavigationView = binding.navView

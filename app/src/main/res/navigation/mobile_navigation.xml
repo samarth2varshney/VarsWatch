@@ -13,8 +13,8 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.varswatch.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
+        android:name="com.example.varswatch.ui.history.HistoryFragment"
+        android:label="@string/title_history"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
