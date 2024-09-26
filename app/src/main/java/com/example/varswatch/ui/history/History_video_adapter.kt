@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.varswatch.R
 import com.example.varswatch.VideoPlayerActivity
-import com.example.varswatch.video_info
+import com.example.varswatch.data.remote.video_info
 
 class history_video_adapter(private val context: Context, private val arr: ArrayList<video_info>?,
 ) : RecyclerView.Adapter<history_video_adapter.ViewHolder>(){

@@ -12,6 +12,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.drive.notification_module.NotificationModule
+import com.example.varswatch.data.remote.video_info
 import com.example.varswatch.util.SharedData
 import com.example.varswatch.util.SharedData.mp
 import com.example.varswatch.util.SharedData.saveVideoInfoList

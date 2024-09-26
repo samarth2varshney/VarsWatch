@@ -9,13 +9,13 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.varswatch.R
-import com.example.varswatch.notification_module.MyReciver
+import com.example.varswatch.notification_module.MyReceiver
 
 object NotificationModule {
 
     fun provideNotificationBuilder( context: Context): NotificationCompat.Builder{
 
-        val intent = Intent(context, MyReciver::class.java).apply {
+        val intent = Intent(context, MyReceiver::class.java).apply {
             putExtra("MESSGAE", "PLAY")
         }
         val flag = if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){

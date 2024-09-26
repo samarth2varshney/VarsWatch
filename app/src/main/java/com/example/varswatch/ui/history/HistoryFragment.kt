@@ -1,7 +1,6 @@
 package com.example.varswatch.ui.history
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.varswatch.databinding.FragmentDashboardBinding
 import com.example.varswatch.util.SharedData
-import com.example.varswatch.video_info
+import com.example.varswatch.data.remote.video_info
 
 class HistoryFragment : Fragment() {
 

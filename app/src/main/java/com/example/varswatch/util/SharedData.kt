@@ -1,7 +1,7 @@
 package com.example.varswatch.util
 
 import android.content.Context
-import com.example.varswatch.video_info
+import com.example.varswatch.data.remote.video_info
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
