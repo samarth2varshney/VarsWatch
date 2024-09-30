@@ -1,4 +1,4 @@
-package com.example.drive.notification_module
+package com.example.varswatch.notification_module
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -9,20 +9,15 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.varswatch.R
-import com.example.varswatch.notification_module.MyReceiver
+import com.example.varswatch.util.SharedData.isPlaying
 
 object NotificationModule {
 
     fun provideNotificationBuilder( context: Context): NotificationCompat.Builder{
-
-        val intent = Intent(context, MyReceiver::class.java).apply {
-            putExtra("MESSGAE", "PLAY")
-        }
-        val flag = if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+        isPlaying = true
+        val intent = Intent(context, MyReceiver::class.java)
+        val flag =
             PendingIntent.FLAG_IMMUTABLE
-        }else{
-            0
-        }
         val pendingIntent = PendingIntent.getBroadcast(
             context,
             0,

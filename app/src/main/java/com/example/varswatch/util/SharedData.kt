@@ -4,11 +4,15 @@ import android.content.Context
 import com.example.varswatch.data.remote.video_info
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 
 object SharedData {
     var Array: ArrayList<video_info> = ArrayList()
     var query:String = ""
     var mp :MutableMap<String,Int> = mutableMapOf()
+    val youtubePlayers: HashMap<String, YouTubePlayer> = HashMap()
+    var player = ""
+    var isPlaying = true
 
     // Function to save the ArrayList of VideoInfo objects to SharedPreferences
     fun saveVideoInfoList(context: Context, key: String) {

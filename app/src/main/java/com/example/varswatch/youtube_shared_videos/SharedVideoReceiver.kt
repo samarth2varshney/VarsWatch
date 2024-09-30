@@ -31,7 +31,7 @@ class SharedVideoReceiver : AppCompatActivity() {
             }
 
             if(playlist){
-                val intent2 = Intent(this, PlaylistExampleActivity::class.java)
+                val intent2 = Intent(this, PlaylistActivity::class.java)
                 intent2.putExtra("youtubelink",youtubelink)
                 startActivity(intent2)
             }else{
