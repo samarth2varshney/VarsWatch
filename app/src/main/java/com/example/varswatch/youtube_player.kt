@@ -18,6 +18,7 @@ class YoutubePlayer(
 ){
     lateinit var youTubePlayerView:YouTubePlayerView
     lateinit var youtubelink:String
+    var title:String = "Video"
     private lateinit var notificationBuilder: NotificationCompat.Builder
     private lateinit var notificationManager: NotificationManagerCompat
     lateinit var context: Context
@@ -25,7 +26,7 @@ class YoutubePlayer(
     fun play(){
 
         player = VIDEO_PLAYER
-        notificationBuilder = NotificationModule.provideNotificationBuilder(context)
+        notificationBuilder = NotificationModule.provideNotificationBuilder(context,title)
         notificationManager = NotificationModule.provideNotificationManager(context)
 
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED){

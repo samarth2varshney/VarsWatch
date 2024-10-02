@@ -12,7 +12,6 @@ object SharedData {
     var mp :MutableMap<String,Int> = mutableMapOf()
     val youtubePlayers: HashMap<String, YouTubePlayer> = HashMap()
     var player = ""
-    var isPlaying = true
 
     // Function to save the ArrayList of VideoInfo objects to SharedPreferences
     fun saveVideoInfoList(context: Context, key: String) {

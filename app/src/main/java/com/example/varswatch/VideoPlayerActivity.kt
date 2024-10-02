@@ -6,9 +6,12 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import com.example.varswatch.data.remote.video_info
+import com.example.varswatch.ui.search.SearchViewModel
 import com.example.varswatch.util.SharedData
 import com.example.varswatch.util.SharedData.mp
 import com.example.varswatch.util.SharedData.saveVideoInfoList
@@ -16,6 +19,7 @@ import com.example.varswatch.util.SharedData.saveVideoInfoList
 class VideoPlayerActivity : AppCompatActivity() {
     
     private lateinit var youtubePlayer: YoutubePlayer
+//    private val viewModel: SearchViewModel by viewModels()
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,11 +27,11 @@ class VideoPlayerActivity : AppCompatActivity() {
         setContentView(R.layout.activity_custom_ui)
 
         val youtubeLink = intent.getStringExtra("youtubelink").toString()
-        val youtubeTitle = intent.getStringExtra("youtubetitle").toString()
+        val youtubeTitle = intent.getStringExtra("youtubetitle")
 
         if(!mp.containsKey(youtubeLink)){
             mp[youtubeLink] = 1
-            val videoInfo = video_info(youtubeLink,youtubeTitle)
+            val videoInfo = video_info(youtubeLink,youtubeTitle.toString())
             SharedData.Array.add(videoInfo)
             saveVideoInfoList(applicationContext,"history")
         }
@@ -37,6 +41,9 @@ class VideoPlayerActivity : AppCompatActivity() {
         youtubePlayer.context = this
         youtubePlayer.youTubePlayerView = findViewById(R.id.youtube_player_view3)
         youtubePlayer.youtubelink = youtubeLink
+        if (youtubeTitle != null) {
+            youtubePlayer.title = youtubeTitle
+        }
 
         youtubePlayer.play()
 

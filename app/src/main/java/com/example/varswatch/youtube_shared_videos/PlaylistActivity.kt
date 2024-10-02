@@ -33,7 +33,7 @@ class PlaylistActivity : AppCompatActivity() {
 
         val youtubeLink = intent.getStringExtra("youtubelink")
         player = PLAYLIST_PLAYER
-        notificationBuilder = NotificationModule.provideNotificationBuilder(applicationContext)
+        notificationBuilder = NotificationModule.provideNotificationBuilder(applicationContext,"")
         notificationManager = NotificationModule.provideNotificationManager(applicationContext)
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED){
