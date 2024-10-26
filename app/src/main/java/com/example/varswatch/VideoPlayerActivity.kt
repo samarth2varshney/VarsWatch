@@ -4,14 +4,17 @@ import android.annotation.SuppressLint
 import android.app.PictureInPictureParams
 import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.example.varswatch.data.remote.video_info
-import com.example.varswatch.ui.search.SearchViewModel
+import com.example.varswatch.notification_module.MusicState
 import com.example.varswatch.util.SharedData
 import com.example.varswatch.util.SharedData.mp
 import com.example.varswatch.util.SharedData.saveVideoInfoList
@@ -19,7 +22,6 @@ import com.example.varswatch.util.SharedData.saveVideoInfoList
 class VideoPlayerActivity : AppCompatActivity() {
     
     private lateinit var youtubePlayer: YoutubePlayer
-//    private val viewModel: SearchViewModel by viewModels()
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,12 +42,31 @@ class VideoPlayerActivity : AppCompatActivity() {
 
         youtubePlayer.context = this
         youtubePlayer.youTubePlayerView = findViewById(R.id.youtube_player_view3)
-        youtubePlayer.youtubelink = youtubeLink
+        youtubePlayer.youtubeLink = youtubeLink
         if (youtubeTitle != null) {
             youtubePlayer.title = youtubeTitle
         }
 
-        youtubePlayer.play()
+        Glide.with(this)
+            .asBitmap()
+            .load("https://img.youtube.com/vi/$youtubeLink/hqdefault.jpg")
+            .into(object : CustomTarget<Bitmap>(){
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                    youtubePlayer.play(
+                        MusicState(
+                            isPlaying = true,
+                            title = title.toString(),
+                            artist = "LE SSERAFIM",
+                            album = "ANTIFRAGILE",
+                            albumArt = resource,
+                            duration = 0
+                        )
+                    )
+                }
+                override fun onLoadCleared(placeholder: Drawable?) {
+
+                }
+            })
 
     }
 
