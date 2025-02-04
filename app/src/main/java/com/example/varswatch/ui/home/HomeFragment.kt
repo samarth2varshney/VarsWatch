@@ -73,7 +73,6 @@ class HomeFragment : Fragment() {
 
     private fun sumbit(query: String) {
         SharedData.query = query
-//        startActivity(Intent(requireContext(), SearchResult::class.java))
         val controller = findNavController()
         controller.navigate(R.id.searchFragment)
     }

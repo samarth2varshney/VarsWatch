@@ -1,34 +1,67 @@
 package com.example.varswatch
 
-import android.annotation.SuppressLint
 import android.app.PictureInPictureParams
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
+import android.os.IBinder
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.varswatch.data.remote.video_info
-import com.example.varswatch.notification_module.MusicState
+import com.example.varswatch.notification_module.YouTubePlayerService
 import com.example.varswatch.util.SharedData
 import com.example.varswatch.util.SharedData.mp
 import com.example.varswatch.util.SharedData.saveVideoInfoList
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
 class VideoPlayerActivity : AppCompatActivity() {
-    
-    private lateinit var youtubePlayer: YoutubePlayer
 
-    @SuppressLint("MissingInflatedId")
+    private lateinit var youTubePlayerView: YouTubePlayerView
+    private lateinit var youTubePlayer: YouTubePlayer
+    private lateinit var serviceIntent: Intent
+    private var playerService: YouTubePlayerService? = null
+    private lateinit var youtubeLink:String
+
+    private val serviceConnection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            val binder = service as? YouTubePlayerService.MusicBinder
+            playerService = binder?.getService()
+            youTubePlayer.let { playerService?.setYouTubePlayer(it) }
+            Glide.with(this@VideoPlayerActivity)
+                .asBitmap()
+                .load("https://img.youtube.com/vi/$youtubeLink/hqdefault.jpg")
+                .into(object : CustomTarget<Bitmap>(){
+                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                        playerService?.image?.value = resource
+                    }
+                    override fun onLoadCleared(placeholder: Drawable?) {
+
+                    }
+                })
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+            playerService = null
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_custom_ui)
 
-        val youtubeLink = intent.getStringExtra("youtubelink").toString()
+        youtubeLink = intent.getStringExtra("youtubelink").toString()
         val youtubeTitle = intent.getStringExtra("youtubetitle")
 
         if(!mp.containsKey(youtubeLink)){
@@ -38,35 +71,21 @@ class VideoPlayerActivity : AppCompatActivity() {
             saveVideoInfoList(applicationContext,"history")
         }
 
-        youtubePlayer = YoutubePlayer()
+        youTubePlayerView = findViewById(R.id.youtube_player_view3)
 
-        youtubePlayer.context = this
-        youtubePlayer.youTubePlayerView = findViewById(R.id.youtube_player_view3)
-        youtubePlayer.youtubeLink = youtubeLink
-        if (youtubeTitle != null) {
-            youtubePlayer.title = youtubeTitle
-        }
+        serviceIntent = Intent(this, YouTubePlayerService::class.java)
+        startService(serviceIntent)
 
-        Glide.with(this)
-            .asBitmap()
-            .load("https://img.youtube.com/vi/$youtubeLink/hqdefault.jpg")
-            .into(object : CustomTarget<Bitmap>(){
-                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                    youtubePlayer.play(
-                        MusicState(
-                            isPlaying = true,
-                            title = title.toString(),
-                            artist = "LE SSERAFIM",
-                            album = "ANTIFRAGILE",
-                            albumArt = resource,
-                            duration = 0
-                        )
-                    )
-                }
-                override fun onLoadCleared(placeholder: Drawable?) {
+        // Initialize YouTubePlayer
+        youTubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+            override fun onReady(youTubePlayer: YouTubePlayer) {
+                this@VideoPlayerActivity.youTubePlayer = youTubePlayer
+                youTubePlayer.loadVideo(youtubeLink,0f)
+                bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE)
+            }
+        })
 
-                }
-            })
+        youTubePlayerView.enableBackgroundPlayback(true)
 
     }
 
@@ -82,7 +101,6 @@ class VideoPlayerActivity : AppCompatActivity() {
 
     override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration) {
         if (lifecycle.currentState == Lifecycle.State.CREATED) {
-            youtubePlayer.release()
             finishAndRemoveTask()
         }
         super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
@@ -96,7 +114,8 @@ class VideoPlayerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        youtubePlayer.release()
+        unbindService(serviceConnection)
+        stopService(serviceIntent)
     }
 
 }
