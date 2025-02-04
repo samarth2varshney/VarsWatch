@@ -6,19 +6,21 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.varswatch.data.remote.SearchResultsDto
+import com.example.varswatch.data.remote.SearchResultsDto.Item
 import com.example.varswatch.domain.repository.YoutubeRepository
 import com.example.varswatch.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.math.log
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val repository: YoutubeRepository
 ) : ViewModel() {
 
-    private var _videoInfo = MutableLiveData<HashMap<String, SearchResultsDto.Item>>()
-    val videoInfo: LiveData<HashMap<String, SearchResultsDto.Item>> get() = _videoInfo
+    private var _videoInfo = MutableLiveData<List<Item>>()
+    val videoInfo: LiveData<List<Item>> get() = _videoInfo
 
     fun search(query: String) {
 
@@ -26,7 +28,8 @@ class SearchViewModel @Inject constructor(
             when(val result = repository.getSearchResults(query)){
                 is Resource.Success->{
                     if(result.data!=null){
-                        val temp = result.data.items.filter { it.id.videoId != null }.associateBy { it.id.videoId } as HashMap<String, SearchResultsDto.Item>
+                        val temp = result.data.items
+                        _videoInfo.value = temp
                         loadExtraData(temp)
                     }
                 }
@@ -38,28 +41,26 @@ class SearchViewModel @Inject constructor(
 
     }
 
-    private fun loadExtraData(temp: HashMap<String, SearchResultsDto.Item>) {
-        val str: HashMap<String, SearchResultsDto.Item> = hashMapOf()
-        temp.forEach {
-            getVideoInfo(it.key,temp,str)
+    private fun loadExtraData(temp: List<Item>) {
+        var ind = -1
+        while (++ind<temp.size) {
+            if(temp[ind].id.kind=="youtube#video")
+                getVideoInfo(ind,temp)
         }
     }
 
     private fun getVideoInfo(
-        id: String,
-        temp: HashMap<String, SearchResultsDto.Item>,
-        str: HashMap<String, SearchResultsDto.Item>
+        ind:Int,
+        temp: List<Item>
     ){
 
         viewModelScope.launch {
-            when(val result = repository.getYoutubeData(id)){
+            when(val result = repository.getYoutubeData(temp[ind].id.videoId!!)){
                 is Resource.Success->{
                     if(result.data!=null){
-                        temp[id]!!.contentDetails = result.data.items!![0]!!.contentDetails
-                        temp[id]!!.statistics = result.data.items[0]!!.statistics
-                        str[id] = temp[id]!!
-                        if(str.size==temp.size)
-                            _videoInfo.value = str
+                        temp[ind].contentDetails = result.data.items!![0]!!.contentDetails
+                        temp[ind].statistics = result.data.items[0]!!.statistics
+                        _videoInfo.value = temp
                     }
                 }
                 is Resource.Error->{

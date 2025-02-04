@@ -1,6 +1,9 @@
 package com.example.varswatch
 
 import android.content.Context
+import android.net.wifi.WifiManager
+import android.widget.ImageView
+import androidx.core.content.ContextCompat.getSystemService
 import com.example.varswatch.notification_module.MusicState
 import com.example.varswatch.notification_module.NotificationModule
 import com.example.varswatch.notification_module.SongController
@@ -13,25 +16,26 @@ class YoutubePlayer {
     lateinit var youTubePlayerView:YouTubePlayerView
     lateinit var youtubeLink:String
     var title:String = "Video"
-    lateinit var currentMusicState:MusicState
+    var currentMusicState:MusicState? = null
     lateinit var context: Context
-    lateinit var youtubePlayer: YouTubePlayer
+    var youtubePlayer: YouTubePlayer? = null
+    var playImageView: ImageView? = null
 
     private val songController = object : SongController {
         override fun playPause() {
-            if (currentMusicState.isPlaying){
-                youtubePlayer.pause()
+            if (currentMusicState!!.isPlaying){
+                youtubePlayer!!.pause()
             }else{
-                youtubePlayer.play()
+                youtubePlayer!!.play()
             }
         }
 
         override fun next() {
-            youtubePlayer.nextVideo()
+            youtubePlayer!!.nextVideo()
         }
 
         override fun previous() {
-            youtubePlayer.previousVideo()
+            youtubePlayer!!.previousVideo()
         }
 
         override fun stop() {
@@ -40,6 +44,14 @@ class YoutubePlayer {
     }
 
     fun play(currentMusic: MusicState){
+
+        playImageView?.setOnClickListener {
+            if(currentMusicState?.isPlaying==true){
+                youtubePlayer?.pause()
+            }else{
+                youtubePlayer?.play()
+            }
+        }
 
         youTubePlayerView.enableBackgroundPlayback(true)
 
@@ -53,14 +65,14 @@ class YoutubePlayer {
 
             override fun onVideoDuration(youTubePlayer: YouTubePlayer, duration: Float) {
                 super.onVideoDuration(youTubePlayer, duration)
-                currentMusicState = currentMusicState.copy(duration = duration.toLong() * 1000)
-                NotificationModule.sendNotification(context,songController,currentMusicState)
+                currentMusicState = currentMusicState!!.copy(duration = duration.toLong() * 1000)
+                NotificationModule.sendNotification(context,songController,currentMusicState!!)
             }
 
             override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
                 super.onCurrentSecond(youTubePlayer, second)
-                currentMusicState = currentMusicState.copy(currentDuration = second.toLong() * 1000)
-                NotificationModule.updateMediaPlaybackState(currentMusicState.currentDuration)
+                currentMusicState = currentMusicState!!.copy(currentDuration = second.toLong() * 1000)
+                NotificationModule.updateMediaPlaybackState(currentMusicState!!.currentDuration)
             }
 
             override fun onStateChange(
@@ -68,12 +80,21 @@ class YoutubePlayer {
                 state: PlayerConstants.PlayerState
             ) {
                 super.onStateChange(youTubePlayer, state)
-                currentMusicState = currentMusicState.copy(isPlaying = state == PlayerConstants.PlayerState.PLAYING)
-                NotificationModule.sendNotification(context,songController,currentMusicState)
+                currentMusicState = currentMusicState!!.copy(isPlaying = state == PlayerConstants.PlayerState.PLAYING)
+                NotificationModule.sendNotification(context,songController,currentMusicState!!)
+                changeButton()
             }
 
         })
 
+    }
+
+    fun changeButton(){
+        if(currentMusicState?.isPlaying==true){
+            playImageView?.setBackgroundResource(R.drawable.ic_pause)
+        }else{
+            playImageView?.setBackgroundResource(R.drawable.ic_play)
+        }
     }
 
     fun release() {

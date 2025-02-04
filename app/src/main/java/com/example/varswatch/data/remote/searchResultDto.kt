@@ -21,7 +21,8 @@ data class SearchResultsDto(
     ) {
         data class Id(
             val kind: String?,
-            val videoId: String
+            val videoId: String?,
+            val channelId: String?
         )
 
         data class Snippet(

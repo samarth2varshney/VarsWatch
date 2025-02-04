@@ -6,6 +6,5 @@ enum class SongAction {
     Stop,
     Next,
     Previous,
-
     Nothing
 }

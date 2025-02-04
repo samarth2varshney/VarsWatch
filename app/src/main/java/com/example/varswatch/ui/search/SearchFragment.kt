@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import com.example.varswatch.MainActivity
 import com.example.varswatch.VideoPlayerActivity
 import com.example.varswatch.data.remote.SearchResultsDto
 import com.example.varswatch.databinding.FragmentSearchBinding
@@ -39,7 +40,7 @@ class SearchFragment : Fragment(), SearchEpoxyController.OnItemClickListener {
 
             viewModel.search(SharedData.query)
 
-            viewModel.videoInfo.observe(viewLifecycleOwner) { it->
+            viewModel.videoInfo.observe(viewLifecycleOwner) { it ->
                 controller.setData(it)
             }
 
@@ -49,10 +50,8 @@ class SearchFragment : Fragment(), SearchEpoxyController.OnItemClickListener {
     }
 
     override fun onItemClick(item: SearchResultsDto.Item) {
-        val intent = Intent(requireContext(), VideoPlayerActivity::class.java)
-        intent.putExtra("youtubelink",item.id.videoId)
-        intent.putExtra("youtubetitle",item.snippet.title)
-        startActivity(intent)
+        if(item.id.videoId!=null)
+            (activity as? MainActivity)?.openPlayer(item.id.videoId, item.snippet.title!!)
     }
 
 }

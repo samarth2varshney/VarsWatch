@@ -17,10 +17,6 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.example.varswatch.R
 
-const val PREV = "prev"
-const val NEXT = "next"
-const val PLAY_PAUSE = "play_pause"
-
 object NotificationModule {
 
     private var songController: SongController? = null

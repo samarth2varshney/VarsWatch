@@ -27,4 +27,9 @@
         android:name="com.example.varswatch.ui.search.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/playerFragment"
+        android:name="com.example.varswatch.ui.PlayerFragment"
+        android:label="fragment_player"
+        tools:layout="@layout/fragment_player" />
 </navigation>
