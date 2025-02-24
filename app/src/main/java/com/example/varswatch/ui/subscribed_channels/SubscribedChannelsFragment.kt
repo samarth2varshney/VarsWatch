@@ -1,4 +1,4 @@
-package com.example.varswatch.ui.history
+package com.example.varswatch.ui.subscribed_channels
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,19 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.varswatch.MainActivity
-import com.example.varswatch.databinding.FragmentHistoryBinding
+import com.example.varswatch.databinding.FragmentSubscribedChannelsBinding
 import com.example.varswatch.domain.model.SearchResults.Item
-import com.example.varswatch.ui.epoxy_controller.VideosEpoxyController
+import com.example.varswatch.ui.epoxy_controller.ChannelsEpoxyController
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HistoryFragment : Fragment(), VideosEpoxyController.OnItemClickListener {
+class SubscribedChannelsFragment : Fragment(), ChannelsEpoxyController.OnItemClickListener {
 
-    private var _binding: FragmentHistoryBinding? = null
+    private var _binding: FragmentSubscribedChannelsBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: HistoryViewModel by viewModels()
+    private val viewModel: SubscribedChannelsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,23 +25,20 @@ class HistoryFragment : Fragment(), VideosEpoxyController.OnItemClickListener {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentHistoryBinding.inflate(inflater, container, false)
+        _binding = FragmentSubscribedChannelsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        viewModel.getHistory()
+        viewModel.getSubscribedChannels()
 
-        binding.apply {
-            progressBar.visibility = View.VISIBLE
-            viewModel.videoInfo.observe(viewLifecycleOwner) {
-                initialize(it)
-            }
+        viewModel.channelsList.observe(viewLifecycleOwner) {
+            initialize(it)
         }
 
         return root
     }
 
     private fun initialize(videoInfo: List<Item>) {
-        val controller = VideosEpoxyController(this)
+        val controller = ChannelsEpoxyController(this)
 
         binding.apply {
             epoxyRecyclerView.setController(controller)
@@ -58,8 +54,6 @@ class HistoryFragment : Fragment(), VideosEpoxyController.OnItemClickListener {
     }
 
     override fun onItemClick(item: Item) {
-        if(item.id.videoId!="") {
-            (activity as? MainActivity)?.openPlayer(item)
-        }
+        viewModel.unsubscribeToChannel(item)
     }
 }

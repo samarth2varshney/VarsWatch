@@ -1,4 +1,4 @@
-package com.example.varswatch
+package com.example.varswatch.motionLayout
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.varswatch.R
 
 class SimpleAdapter(private val callback: ((String) -> Unit)? = null, private val layoutResId: Int)
     : RecyclerView.Adapter<SimpleAdapter.ViewHolder>() {
@@ -48,21 +49,33 @@ object DataSource {
     val items by lazy {
         mutableListOf<Item>().apply {
             repeat(5) {
-                add(Item("The Secret Life of Walter Mitty", "Beta",
+                add(
+                    Item("The Secret Life of Walter Mitty", "Beta",
                     "https://image-ticketfly.imgix.net/00/01/61/65/25-og.jpg?w=500&h=334&fit=crop&crop=top",
-                    R.drawable.applogo))
+                    R.drawable.applogo
+                    )
+                )
 
-                add(Item("Breaking Bad 1.3", "Netflix",
+                add(
+                    Item("Breaking Bad 1.3", "Netflix",
                     "https://ichef.bbci.co.uk/news/660/cpsprodpb/1094D/production/_108471976_95214ef6-d0b9-462c-98e9-9d0a86f2d135.jpg",
-                    R.drawable.applogo))
+                    R.drawable.applogo
+                    )
+                )
 
-                add(Item("Pulp Fiction - Go into The Story", "Kinopoisk",
+                add(
+                    Item("Pulp Fiction - Go into The Story", "Kinopoisk",
                     "https://miro.medium.com/max/2400/1*9QwZkXU_gfk5FJotW-dCnA.jpeg",
-                    R.drawable.applogo))
+                    R.drawable.applogo
+                    )
+                )
 
-                add(Item("If Joaquin Phoenix Is Willing to Do It?!", "IndieWire",
+                add(
+                    Item("If Joaquin Phoenix Is Willing to Do It?!", "IndieWire",
                     "https://www.indiewire.com/wp-content/uploads/2019/06/joker-movie-fb.jpg?w=768",
-                    R.drawable.applogo))
+                    R.drawable.applogo
+                    )
+                )
             }
         }
     }

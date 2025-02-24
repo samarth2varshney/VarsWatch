@@ -1,6 +1,9 @@
 package com.example.varswatch.di
 
 import com.example.varswatch.data.remote.YoutubeApi
+import com.example.varswatch.data.repository.YoutubeRepositoryImpl
+import com.example.varswatch.domain.repository.YoutubeRepository
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,5 +27,16 @@ object AppModule {
             .create()
     }
 
+    @Provides
+    @Singleton
+    fun provideFirebaseRepository(): FirebaseFirestore {
+        return FirebaseFirestore.getInstance()
+    }
+
+    @Provides
+    @Singleton
+    fun provideYoutubeRepository(api: YoutubeApi,firestoreInstance: FirebaseFirestore): YoutubeRepository{
+        return YoutubeRepositoryImpl(api,firestoreInstance)
+    }
 
 }

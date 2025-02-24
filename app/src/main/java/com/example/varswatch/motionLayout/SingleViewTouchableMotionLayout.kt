@@ -1,4 +1,4 @@
-package com.example.varswatch
+package com.example.varswatch.motionLayout
 
 import android.content.Context
 import android.graphics.Rect
@@ -7,6 +7,7 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
 import androidx.constraintlayout.motion.widget.MotionLayout
+import com.example.varswatch.R
 
 class SingleViewTouchableMotionLayout(context: Context, attributeSet: AttributeSet? = null) : MotionLayout(context, attributeSet) {
 

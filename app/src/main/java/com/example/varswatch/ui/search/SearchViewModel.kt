@@ -5,14 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.varswatch.data.remote.SearchResultsDto
-import com.example.varswatch.data.remote.SearchResultsDto.Item
+import com.example.varswatch.domain.model.SearchResults.Item
 import com.example.varswatch.domain.repository.YoutubeRepository
 import com.example.varswatch.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.math.log
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
@@ -22,14 +20,22 @@ class SearchViewModel @Inject constructor(
     private var _videoInfo = MutableLiveData<List<Item>>()
     val videoInfo: LiveData<List<Item>> get() = _videoInfo
 
+    private var count = 0
+
+    fun saveToPlayList(playListName:String,item: Item){
+        viewModelScope.launch {
+            repository.addVideoToPlayList(item,playListName)
+        }
+    }
+
     fun search(query: String) {
 
         viewModelScope.launch {
             when(val result = repository.getSearchResults(query)){
                 is Resource.Success->{
+                    count = 0
                     if(result.data!=null){
                         val temp = result.data.items
-                        _videoInfo.value = temp
                         loadExtraData(temp)
                     }
                 }
@@ -46,6 +52,8 @@ class SearchViewModel @Inject constructor(
         while (++ind<temp.size) {
             if(temp[ind].id.kind=="youtube#video")
                 getVideoInfo(ind,temp)
+            else
+                count++
         }
     }
 
@@ -55,12 +63,15 @@ class SearchViewModel @Inject constructor(
     ){
 
         viewModelScope.launch {
-            when(val result = repository.getYoutubeData(temp[ind].id.videoId!!)){
+            when(val result = repository.getYoutubeData(temp[ind].id.videoId)){
                 is Resource.Success->{
+                    count++
                     if(result.data!=null){
-                        temp[ind].contentDetails = result.data.items!![0]!!.contentDetails
-                        temp[ind].statistics = result.data.items[0]!!.statistics
-                        _videoInfo.value = temp
+                        temp[ind].contentDetails = result.data.items[0].contentDetails
+                        temp[ind].statistics = result.data.items[0].statistics
+                        if(count==temp.size) {
+                            _videoInfo.value = temp
+                        }
                     }
                 }
                 is Resource.Error->{
@@ -69,6 +80,12 @@ class SearchViewModel @Inject constructor(
             }
         }
 
+    }
+
+    fun subscribeToChannel(item: Item) {
+        viewModelScope.launch {
+            repository.subscribeToChannel(item)
+        }
     }
 
 }

@@ -54,6 +54,8 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.firebase.firestore)
     implementation(libs.androidx.media3.session)
+    implementation(libs.androidx.legacy.support.v4)
+    implementation(libs.androidx.fragment.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -62,9 +64,6 @@ dependencies {
     implementation (libs.core)
 
     implementation (libs.gson)
-
-    //api calling library
-    implementation(libs.okhttp)
 
     //image loading library
     implementation (libs.glide)
@@ -75,16 +74,21 @@ dependencies {
     //airbnb recycler view
     implementation (libs.epoxy)
 
-    // Retrofit
+    //api calling library
     implementation (libs.retrofit)
     implementation (libs.converter.moshi)
+    implementation(libs.okhttp)
 
     //dependency injection
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
 
-    //Permissions
+    //Permissions asking library
     implementation (libs.permissionx)
+
+    // Room Database for Offline Storage
+    implementation("androidx.room:room-ktx:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
 
     implementation ("androidx.media:media:1.6.0")
 

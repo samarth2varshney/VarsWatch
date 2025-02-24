@@ -1,19 +1,19 @@
-package com.example.varswatch.ui.search
+package com.example.varswatch.ui.epoxy_controller
 
 import com.airbnb.epoxy.TypedEpoxyController
 import com.bumptech.glide.Glide
 import com.example.varswatch.R
 import com.example.varswatch.ViewBindingKotlinModel
-import com.example.varswatch.data.remote.SearchResultsDto.Item
 import com.example.varswatch.databinding.ChannelItemBinding
 import com.example.varswatch.databinding.SearchVideoItemBinding
+import com.example.varswatch.domain.model.SearchResults.Item
 
-class SearchEpoxyController(
+class VideosChannelsEpoxyController(
     private val itemClickListener: OnItemClickListener
 ) : TypedEpoxyController<List<Item>>() {
 
     interface OnItemClickListener {
-        fun onItemClick(item: Item)
+        fun onItemClick(item: Item,subscribe:Boolean=false,saveToPlayList:Boolean=false)
     }
 
     override fun buildModels(data: List<Item>?) {
@@ -41,7 +41,7 @@ class SearchEpoxyController(
             channelName.text = item.snippet.channelTitle
 
             subscribeButton.setOnClickListener {
-                itemClickListener.onItemClick(item)
+                itemClickListener.onItemClick(item, subscribe = true)
             }
 
         }
@@ -61,8 +61,10 @@ class SearchEpoxyController(
             thumbnail.text = item.snippet.title
             channelName.text = item.snippet.channelTitle
 
-            if (item.contentDetails != null) {
-                duration.text = convert(item.contentDetails!!.duration!!)
+            duration.text = convert(item.contentDetails.duration)
+
+            saveButton.setOnClickListener {
+                itemClickListener.onItemClick(item,saveToPlayList = true)
             }
 
             root.setOnClickListener {
@@ -71,7 +73,7 @@ class SearchEpoxyController(
 
         }
 
-        fun convert(tim: String): String {
+        private fun convert(tim: String): String {
             val n = tim.length
             val ans = StringBuilder()
 

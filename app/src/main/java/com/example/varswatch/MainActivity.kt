@@ -2,27 +2,32 @@ package com.example.varswatch
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.motion.widget.MotionLayout
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.varswatch.databinding.ActivityMainBinding
-import com.example.varswatch.ui.PlayerFragment
+import com.example.varswatch.domain.model.SearchResults.Item
+import com.example.varswatch.domain.repository.YoutubeRepository
 import com.example.varswatch.util.SharedData.Array
 import com.example.varswatch.util.SharedData.getVideoInfoList
 import com.example.varswatch.util.SharedData.mp
 import com.example.varswatch.util.getNotificationPermission
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
+    @Inject
+    lateinit var repository: YoutubeRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         if (supportActionBar != null) {
-            supportActionBar!!.hide();
+            supportActionBar!!.hide()
         }
 
         Array = getVideoInfoList(applicationContext,"history")
@@ -49,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_dashboard
+                R.id.navigation_home, R.id.navigation_history, R.id.navigation_subscribed_channels, R.id.navigation_playList
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -57,37 +62,22 @@ class MainActivity : AppCompatActivity() {
 
         getNotificationPermission {}
 
-        openPlayer("jXwg9l9D51A","")
-
-        lifecycleScope.launchWhenStarted {
-            PlayerFragment.playerProgress.collect { progress ->
-                binding.container.progress = progress
-            }
-        }
-
     }
 
-    override fun onBackPressed() {
+    fun openPlayer(item: Item){
 
-        if(PlayerFragment.playerProgress.value == 1.0f) {
-            PlayerFragment.motionLayout?.transitionToStart()
-            return
-        }
-
-        super.onBackPressed()
-    }
-
-    fun openPlayer(url:String,title:String){
-//        supportFragmentManager.beginTransaction()
-//            .replace(R.id.playerFragmentContainer, PlayerFragment.newInstance(url,title))
-//            .addToBackStack(null)
-//            .commit()
+        addToHistory(item)
         val intent = Intent(this, VideoPlayerActivity::class.java).apply {
-            putExtra("youtubelink",url)
-            putExtra("youtubetitle",title)
+            putExtra("videoId",item.id.videoId)
+            putExtra("videoTitle",item.snippet.title)
         }
         startActivity(intent)
+    }
 
+    private fun addToHistory(item: Item){
+        CoroutineScope(Dispatchers.Main).launch {
+            repository.addVideoToHistory(item)
+        }
     }
 
 }

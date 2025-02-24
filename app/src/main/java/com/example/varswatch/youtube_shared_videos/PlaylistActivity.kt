@@ -9,7 +9,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.varswatch.databinding.ActivityPlaylistBinding
-import com.example.varswatch.notification_module.NotificationModule
 import com.example.varswatch.util.Constants.PLAYLIST_PLAYER
 import com.example.varswatch.util.SharedData.player
 import com.example.varswatch.util.SharedData.youtubePlayers

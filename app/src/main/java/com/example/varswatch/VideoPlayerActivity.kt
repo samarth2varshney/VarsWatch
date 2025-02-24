@@ -18,6 +18,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.varswatch.data.remote.video_info
+import com.example.varswatch.domain.model.SearchResults.Item
+import com.example.varswatch.domain.repository.YoutubeRepository
 import com.example.varswatch.notification_module.YouTubePlayerService
 import com.example.varswatch.util.SharedData
 import com.example.varswatch.util.SharedData.mp
@@ -25,6 +27,11 @@ import com.example.varswatch.util.SharedData.saveVideoInfoList
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class VideoPlayerActivity : AppCompatActivity() {
 
@@ -32,7 +39,7 @@ class VideoPlayerActivity : AppCompatActivity() {
     private lateinit var youTubePlayer: YouTubePlayer
     private lateinit var serviceIntent: Intent
     private var playerService: YouTubePlayerService? = null
-    private lateinit var youtubeLink:String
+    private lateinit var videoId:String
 
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
@@ -41,7 +48,7 @@ class VideoPlayerActivity : AppCompatActivity() {
             youTubePlayer.let { playerService?.setYouTubePlayer(it) }
             Glide.with(this@VideoPlayerActivity)
                 .asBitmap()
-                .load("https://img.youtube.com/vi/$youtubeLink/hqdefault.jpg")
+                .load("https://img.youtube.com/vi/$videoId/hqdefault.jpg")
                 .into(object : CustomTarget<Bitmap>(){
                     override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                         playerService?.image?.value = resource
@@ -61,12 +68,12 @@ class VideoPlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_custom_ui)
 
-        youtubeLink = intent.getStringExtra("youtubelink").toString()
-        val youtubeTitle = intent.getStringExtra("youtubetitle")
+        videoId = intent.getStringExtra("videoId").toString()
+        val youtubeTitle = intent.getStringExtra("videoTitle")
 
-        if(!mp.containsKey(youtubeLink)){
-            mp[youtubeLink] = 1
-            val videoInfo = video_info(youtubeLink,youtubeTitle.toString())
+        if(!mp.containsKey(videoId)){
+            mp[videoId] = 1
+            val videoInfo = video_info(videoId,youtubeTitle.toString())
             SharedData.Array.add(videoInfo)
             saveVideoInfoList(applicationContext,"history")
         }
@@ -80,7 +87,7 @@ class VideoPlayerActivity : AppCompatActivity() {
         youTubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
             override fun onReady(youTubePlayer: YouTubePlayer) {
                 this@VideoPlayerActivity.youTubePlayer = youTubePlayer
-                youTubePlayer.loadVideo(youtubeLink,0f)
+                youTubePlayer.loadVideo(videoId,0f)
                 bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE)
             }
         })

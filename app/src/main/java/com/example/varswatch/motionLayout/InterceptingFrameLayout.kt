@@ -1,4 +1,4 @@
-package com.example.varswatch
+package com.example.varswatch.motionLayout
 
 import android.content.Context
 import android.util.AttributeSet

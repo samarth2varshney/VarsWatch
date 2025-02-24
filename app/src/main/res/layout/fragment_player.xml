@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.example.varswatch.SingleViewTouchableMotionLayout
+<com.example.varswatch.motionLayout.SingleViewTouchableMotionLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutDescription="@xml/fragment_player_scene"
-    tools:context=".ui.PlayerFragment">
+    tools:context=".motionLayout.PlayerFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main_container"
@@ -20,7 +20,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.example.varswatch.InterceptingFrameLayout
+    <com.example.varswatch.motionLayout.InterceptingFrameLayout
         android:id="@+id/main_imageView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </com.example.varswatch.InterceptingFrameLayout>
+    </com.example.varswatch.motionLayout.InterceptingFrameLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/content"
@@ -103,4 +103,4 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-</com.example.varswatch.SingleViewTouchableMotionLayout>
+</com.example.varswatch.motionLayout.SingleViewTouchableMotionLayout>

@@ -22,11 +22,11 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstan
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 
-const val PREV = "prev"
-const val NEXT = "next"
-const val PLAY_PAUSE = "play_pause"
-
 class YouTubePlayerService : Service() {
+
+    private val prev = "prev"
+    private val next = "next"
+    private val playPause = "play_pause"
 
     private val binder = MusicBinder()
 
@@ -53,13 +53,13 @@ class YouTubePlayerService : Service() {
 
         intent?.let {
             when (intent.action) {
-                PREV -> {
+                prev -> {
                 }
 
-                NEXT -> {
+                next -> {
                 }
 
-                PLAY_PAUSE -> {
+                playPause -> {
                     if(isPlaying)
                         youTubePlayer?.pause()
                     else
@@ -147,13 +147,13 @@ class YouTubePlayerService : Service() {
             .setStyle(style)
             .setContentTitle("track.name")
             .setContentText("track.desc")
-            .addAction(R.drawable.ic_prev, "prev", createPendingIntent(PREV,0))
+            .addAction(R.drawable.ic_prev, "prev", createPendingIntent(prev,0))
             .addAction(
                 if (isPlaying) R.drawable.ic_pause else R.drawable.ic_play,
                 "play_pause",
-                createPendingIntent(PLAY_PAUSE,1)
+                createPendingIntent(playPause,1)
             )
-            .addAction(R.drawable.ic_next, "next", createPendingIntent(NEXT,2))
+            .addAction(R.drawable.ic_next, "next", createPendingIntent(next,2))
             .setSmallIcon(R.drawable.applogo)
             .setLargeIcon(image.value)
             .setOngoing(true)

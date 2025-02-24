@@ -9,27 +9,45 @@
         android:id="@+id/navigation_home"
         android:name="com.example.varswatch.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_searchFragment"
+            app:destination="@id/searchFragment" />
+    </fragment>
 
     <fragment
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_history"
         android:name="com.example.varswatch.ui.history.HistoryFragment"
         android:label="@string/title_history"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_history" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.varswatch.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_subscribed_channels"
+        android:name="com.example.varswatch.ui.subscribed_channels.SubscribedChannelsFragment"
+        android:label="@string/title_subscribed_channels"
+        tools:layout="@layout/fragment_subscribed_channels" />
+
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.varswatch.ui.search.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
     <fragment
-        android:id="@+id/playerFragment"
-        android:name="com.example.varswatch.ui.PlayerFragment"
-        android:label="fragment_player"
-        tools:layout="@layout/fragment_player" />
+        android:id="@+id/navigation_playList"
+        android:name="com.example.varswatch.ui.play_list.PlayListFragment"
+        android:label="fragment_play_list"
+        tools:layout="@layout/fragment_play_list" >
+        <action
+            android:id="@+id/action_navigation_playList_to_playListVideosFragment"
+            app:destination="@id/playListVideosFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/playListVideosFragment"
+        android:name="com.example.varswatch.ui.play_list.PlayListVideosFragment"
+        android:label="fragment_play_list_videos"
+        tools:layout="@layout/fragment_play_list_videos">
+        <argument
+            android:name="param1"
+            app:argType="string" />
+    </fragment>
 </navigation>

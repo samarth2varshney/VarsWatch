@@ -1,23 +1,19 @@
-package com.example.varswatch.ui
+package com.example.varswatch.motionLayout
 
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.varswatch.R
-import com.example.varswatch.SimpleAdapter
-import com.example.varswatch.YoutubePlayer
 import com.example.varswatch.databinding.FragmentPlayerBinding
-import com.example.varswatch.notification_module.MusicState
 import kotlinx.coroutines.flow.MutableStateFlow
 
 private const val URL = "url"
@@ -28,7 +24,7 @@ class PlayerFragment : Fragment() {
     companion object {
 
         val playerProgress = MutableStateFlow(0f)
-        var motionLayout:MotionLayout? = null
+        var motionLayout: MotionLayout? = null
 
         fun newInstance(url:String,youtubeTitle:String): PlayerFragment = PlayerFragment().also { f ->
             f.arguments = Bundle().also { b ->
@@ -39,7 +35,6 @@ class PlayerFragment : Fragment() {
     }
 
     private var _binding: FragmentPlayerBinding? = null
-    private lateinit var youtubePlayer: YoutubePlayer
 
     val binding get() = _binding!!
 
@@ -47,7 +42,7 @@ class PlayerFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentPlayerBinding.inflate(layoutInflater,container,false)
+        _binding = FragmentPlayerBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -57,40 +52,6 @@ class PlayerFragment : Fragment() {
         binding.recyclerView.apply {
             adapter = SimpleAdapter(layoutResId = R.layout.view_item_main)
             layoutManager = LinearLayoutManager(requireContext())
-        }
-
-        if (arguments?.containsKey(URL) == true) {
-            youtubePlayer = YoutubePlayer()
-
-            youtubePlayer.context = requireContext()
-            youtubePlayer.youTubePlayerView = view.findViewById(R.id.youtube_player)
-            youtubePlayer.youtubeLink = arguments?.getString(URL)!!
-            youtubePlayer.playImageView = binding.playImageView
-
-            if (arguments?.containsKey(TITLE) == true) {
-                youtubePlayer.title = arguments?.getString(TITLE)!!
-            }
-
-            Glide.with(this)
-                .asBitmap()
-                .load("https://img.youtube.com/vi/${youtubePlayer.youtubeLink}/hqdefault.jpg")
-                .into(object : CustomTarget<Bitmap>(){
-                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                        youtubePlayer.play(
-                            MusicState(
-                                isPlaying = true,
-                                title = youtubePlayer.title,
-                                artist = "LE SSERAFIM",
-                                album = "ANTIFRAGILE",
-                                albumArt = resource,
-                                duration = 0
-                            )
-                        )
-                    }
-                    override fun onLoadCleared(placeholder: Drawable?) {
-
-                    }
-                })
         }
 
         motionLayout = binding.motionLayout
@@ -115,7 +76,6 @@ class PlayerFragment : Fragment() {
                     else -> {
                     }
                 }
-                youtubePlayer.youtubePlayer?.pause()
             }
             override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {
             }
