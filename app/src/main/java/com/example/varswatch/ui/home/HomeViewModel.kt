@@ -22,18 +22,6 @@ class HomeViewModel  @Inject constructor(
     private val _videoInfo = MutableLiveData<List<Item>>()
     val videoInfo: LiveData<List<Item>> = _videoInfo
 
-    fun createNewUser(email:String){
-        viewModelScope.launch {
-            when(repository.createNewUser(email)) {
-                is Resource.Error -> {}
-                is Resource.Success -> {
-                    sharedPrefManager.saveEmail(email)
-                }
-            }
-        }
-    }
-
-
     fun getSubscribedChannels(){
         viewModelScope.launch {
             when(val result = repository.getSubscribedChannels()){

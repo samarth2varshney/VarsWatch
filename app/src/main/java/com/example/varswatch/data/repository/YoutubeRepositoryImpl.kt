@@ -42,16 +42,6 @@ class YoutubeRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun createNewUser(email: String): Resource<Boolean> {
-        return try {
-            user = firestoreInstance.collection("Users").document(auth.currentUser!!.email!!)
-            return Resource.Success(true)
-        }catch (e:Exception){
-            e.printStackTrace()
-            Resource.Error(e.message?:"An error occurred")
-        }
-    }
-
 
     override suspend fun getYoutubeData(id: String): Resource<VideoData> {
         return try {

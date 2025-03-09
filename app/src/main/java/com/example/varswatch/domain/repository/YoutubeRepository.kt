@@ -7,8 +7,6 @@ import com.example.varswatch.domain.util.Resource
 
 interface YoutubeRepository {
 
-    suspend fun createNewUser(email:String):Resource<Boolean>
-
     suspend fun getYoutubeData(id: String): Resource<VideoData>
 
     suspend fun getSearchResults(query:String): Resource<SearchResults>

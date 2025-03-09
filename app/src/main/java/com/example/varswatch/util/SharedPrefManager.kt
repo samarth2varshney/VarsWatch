@@ -2,7 +2,6 @@ package com.example.varswatch.util
 
 import android.content.SharedPreferences
 import javax.inject.Inject
-import javax.inject.Singleton
 
 class SharedPrefManager @Inject constructor(private val sharedPreferences: SharedPreferences) {
 

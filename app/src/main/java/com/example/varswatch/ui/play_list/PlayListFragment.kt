@@ -2,17 +2,13 @@ package com.example.varswatch.ui.play_list
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.varswatch.R
 import com.example.varswatch.databinding.FragmentPlayListBinding
-import com.example.varswatch.databinding.FragmentSearchBinding
-import com.example.varswatch.domain.model.SearchResults.Item
 import com.example.varswatch.ui.epoxy_controller.PlayListsController
-import com.example.varswatch.ui.epoxy_controller.VideosEpoxyController
 import com.example.varswatch.util.VarsFragment
 import dagger.hilt.android.AndroidEntryPoint
 
