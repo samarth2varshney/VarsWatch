@@ -9,10 +9,11 @@ import androidx.fragment.app.viewModels
 import com.example.varswatch.databinding.FragmentSubscribedChannelsBinding
 import com.example.varswatch.domain.model.SearchResults.Item
 import com.example.varswatch.ui.epoxy_controller.ChannelsEpoxyController
+import com.example.varswatch.util.VarsFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SubscribedChannelsFragment : Fragment(), ChannelsEpoxyController.OnItemClickListener {
+class SubscribedChannelsFragment : VarsFragment(), ChannelsEpoxyController.OnItemClickListener {
 
     private var _binding: FragmentSubscribedChannelsBinding? = null
     private val binding get() = _binding!!

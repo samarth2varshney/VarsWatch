@@ -30,12 +30,29 @@ class SearchViewModel @Inject constructor(
 
     fun search(query: String) {
 
+        if(query.isEmpty()){
+            _videoInfo.value = emptyList()
+            return
+        }
+
         viewModelScope.launch {
+            val temp:MutableList<Item> = emptyList<Item>().toMutableList()
+            when(val result = repository.getChannelSearchResults(query)){
+                is Resource.Success->{
+                    count = 0
+                    if(result.data!=null){
+                        temp.addAll(result.data.items as MutableList)
+                    }
+                }
+                is Resource.Error->{
+                    Log.i("SearchViewModel","error message ${result.message}")
+                }
+            }
             when(val result = repository.getSearchResults(query)){
                 is Resource.Success->{
                     count = 0
                     if(result.data!=null){
-                        val temp = result.data.items
+                        temp.addAll(result.data.items as MutableList)
                         loadExtraData(temp)
                     }
                 }

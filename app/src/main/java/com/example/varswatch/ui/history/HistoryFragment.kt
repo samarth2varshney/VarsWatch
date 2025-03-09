@@ -10,10 +10,11 @@ import com.example.varswatch.MainActivity
 import com.example.varswatch.databinding.FragmentHistoryBinding
 import com.example.varswatch.domain.model.SearchResults.Item
 import com.example.varswatch.ui.epoxy_controller.VideosEpoxyController
+import com.example.varswatch.util.VarsFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HistoryFragment : Fragment(), VideosEpoxyController.OnItemClickListener {
+class HistoryFragment : VarsFragment(), VideosEpoxyController.OnItemClickListener {
 
     private var _binding: FragmentHistoryBinding? = null
     private val binding get() = _binding!!

@@ -7,9 +7,15 @@ import com.example.varswatch.domain.util.Resource
 
 interface YoutubeRepository {
 
+    suspend fun createNewUser(email:String):Resource<Boolean>
+
     suspend fun getYoutubeData(id: String): Resource<VideoData>
 
     suspend fun getSearchResults(query:String): Resource<SearchResults>
+
+    suspend fun getChannelSearchResults(query:String): Resource<SearchResults>
+
+    suspend fun getChannelVideos(channelId:String):Resource<SearchResults>
 
     suspend fun addVideoToHistory(item: Item)
 
@@ -20,8 +26,6 @@ interface YoutubeRepository {
     suspend fun getSubscribedChannels():Resource<List<Item>>
 
     suspend fun getHistory():Resource<List<Item>>
-
-    suspend fun getChannelVideos(channelId:String):Resource<SearchResults>
 
     suspend fun getPlayList(playListName:String):Resource<List<Item>>
 

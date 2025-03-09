@@ -13,12 +13,17 @@ interface YoutubeApi {
         @Query("id") videoId: String
     ): VideoDataDto
 
-    @GET("search?part=snippet&type=video,channel&maxResults=10&key=${key}")
+    @GET("search?part=snippet&type=channel,video&maxResults=10&key=${key}")
     suspend fun search(
         @Query("q") query:String
     ) : SearchResultsDto
 
-    @GET("search?part=snippet&type=video&order=date&maxResults=5&key=${key}")
+    @GET("search?part=snippet&type=channel&maxResults=1&key=${key}")
+    suspend fun searchChannels(
+        @Query("q") query:String
+    ) : SearchResultsDto
+
+    @GET("search?part=snippet&type=video&order=relevance&maxResults=5&key=${key}")
     suspend fun getChannelVideos(
         @Query("channelId") channelId:String
     ) : SearchResultsDto

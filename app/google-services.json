@@ -2,7 +2,7 @@
   "project_info": {
     "project_number": "466589821802",
     "project_id": "varswatch-6c51b",
-    "storage_bucket": "varswatch-6c51b.appspot.com"
+    "storage_bucket": "varswatch-6c51b.firebasestorage.app"
   },
   "client": [
     {
@@ -12,7 +12,20 @@
           "package_name": "com.example.varswatch"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "466589821802-i729mgt2l9q5bblvm8e9ekq4tsihb307.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.varswatch",
+            "certificate_hash": "b0277e031983d8f5b0d19b82008abc6256864ea1"
+          }
+        },
+        {
+          "client_id": "466589821802-klodg2cropvcutl6tmckusa7j6itqs7d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCGPWOzGnBD89UXelJngBwUTOEXvIYxYZQ"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "466589821802-klodg2cropvcutl6tmckusa7j6itqs7d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

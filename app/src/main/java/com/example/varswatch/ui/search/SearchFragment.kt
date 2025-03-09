@@ -12,10 +12,11 @@ import com.example.varswatch.domain.model.SearchResults
 import com.example.varswatch.ui.epoxy_controller.VideosChannelsEpoxyController
 import com.example.varswatch.ui.play_list.PlayListBottomFragment
 import com.example.varswatch.util.SharedData
+import com.example.varswatch.util.VarsFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SearchFragment : Fragment(), VideosChannelsEpoxyController.OnItemClickListener,PlayListBottomFragment.CardDialogListener {
+class SearchFragment : VarsFragment(), VideosChannelsEpoxyController.OnItemClickListener,PlayListBottomFragment.CardDialogListener {
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!

@@ -13,10 +13,11 @@ import com.example.varswatch.databinding.FragmentSearchBinding
 import com.example.varswatch.domain.model.SearchResults.Item
 import com.example.varswatch.ui.epoxy_controller.PlayListsController
 import com.example.varswatch.ui.epoxy_controller.VideosEpoxyController
+import com.example.varswatch.util.VarsFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PlayListFragment : Fragment(),PlayListsController.OnItemClickListener{
+class PlayListFragment : VarsFragment(),PlayListsController.OnItemClickListener{
 
     private var _binding: FragmentPlayListBinding? = null
     private val binding get() = _binding!!

@@ -8,17 +8,31 @@ import androidx.lifecycle.viewModelScope
 import com.example.varswatch.domain.model.SearchResults.Item
 import com.example.varswatch.domain.repository.YoutubeRepository
 import com.example.varswatch.domain.util.Resource
+import com.example.varswatch.util.SharedPrefManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel  @Inject constructor(
-    private val repository: YoutubeRepository
+    private val repository: YoutubeRepository,
+    private val sharedPrefManager: SharedPrefManager
 ) : ViewModel() {
 
     private val _videoInfo = MutableLiveData<List<Item>>()
     val videoInfo: LiveData<List<Item>> = _videoInfo
+
+    fun createNewUser(email:String){
+        viewModelScope.launch {
+            when(repository.createNewUser(email)) {
+                is Resource.Error -> {}
+                is Resource.Success -> {
+                    sharedPrefManager.saveEmail(email)
+                }
+            }
+        }
+    }
+
 
     fun getSubscribedChannels(){
         viewModelScope.launch {

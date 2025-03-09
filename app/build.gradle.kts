@@ -9,12 +9,12 @@ plugins {
 
 android {
     namespace = "com.example.varswatch"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.varswatch"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -91,6 +91,9 @@ dependencies {
     kapt("androidx.room:room-compiler:2.6.1")
 
     implementation ("androidx.media:media:1.6.0")
+
+    // Firebase UI
+    implementation ("com.firebaseui:firebase-ui-auth:8.0.2")
 
 }
 
