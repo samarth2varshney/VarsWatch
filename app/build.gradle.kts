@@ -94,6 +94,7 @@ dependencies {
 
     // Firebase UI
     implementation ("com.firebaseui:firebase-ui-auth:8.0.2")
+    implementation ("com.google.firebase:firebase-auth:21.0.0")
 
 }
 

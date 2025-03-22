@@ -49,7 +49,14 @@ class PlayListViewModel @Inject constructor(
 
     fun addNewPlayList(playListName:String){
         viewModelScope.launch {
-            repository.addNewPlayList(playListName)
+            when(repository.addNewPlayList(playListName)){
+                is Resource.Success -> {
+                    getPlayLists()
+                }
+                is Resource.Error ->{
+
+                }
+            }
         }
     }
 

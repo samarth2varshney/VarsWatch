@@ -141,8 +141,11 @@ class YoutubeRepositoryImpl @Inject constructor(
         user.collection(playList).document(playListName).collection("List").document(item.id.videoId).set(item)
     }
 
-    override suspend fun addNewPlayList(playListName: String) {
-        user.collection(playList).document(playListName).collection("List")
+    override suspend fun addNewPlayList(playListName: String):Resource<Boolean> {
+        Log.i("repo","chala")
+        val data = mapOf("name" to playListName)
+        user.collection(playList).document(playListName).set(data).await()
+        return Resource.Success(true)
     }
 
     override suspend fun getListOfPlayLists(): Resource<List<String>> {

@@ -2,16 +2,13 @@ package com.example.varswatch.ui.play_list
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.example.varswatch.databinding.FragmentPlayListBottomBinding
-import com.example.varswatch.ui.epoxy_controller.PlayListsController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -40,6 +37,7 @@ class PlayListBottomFragment(listener: CardDialogListener)  : BottomSheetDialogF
             mBottomSheetListener = context as CardDialogListener?
         }
         catch (e: ClassCastException){
+            e.printStackTrace()
         }
     }
 
@@ -72,7 +70,9 @@ class PlayListBottomFragment(listener: CardDialogListener)  : BottomSheetDialogF
 
         binding.apply {
 
-            for ((index, text) in videoInfo.withIndex()) {
+            radioGroup.removeAllViews() // Remove existing radio buttons
+
+            for ((index,text) in videoInfo.withIndex()) {
                 val radioButton = RadioButton(requireContext()).apply {
                     layoutParams = RadioGroup.LayoutParams(
                         RadioGroup.LayoutParams.MATCH_PARENT,
@@ -87,9 +87,11 @@ class PlayListBottomFragment(listener: CardDialogListener)  : BottomSheetDialogF
                 radioGroup.addView(radioButton)
             }
 
-            // Optional: Set default selection
-            radioGroup.check(radioGroup.getChildAt(0).id)
-            playListName = videoInfo[0]
+            // Optional: Set default selection if list is not empty
+            if (videoInfo.isNotEmpty()) {
+                radioGroup.check(radioGroup.getChildAt(0).id)
+                playListName = videoInfo[0]
+            }
 
             radioGroup.setOnCheckedChangeListener { _, checkedId ->
                 val selectedRadioButton = binding.radioGroup.findViewById<RadioButton>(checkedId)

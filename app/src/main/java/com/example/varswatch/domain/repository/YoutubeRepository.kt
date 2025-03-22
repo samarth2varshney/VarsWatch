@@ -29,7 +29,7 @@ interface YoutubeRepository {
 
     suspend fun addVideoToPlayList(item: Item, playListName: String)
 
-    suspend fun addNewPlayList(playListName: String)
+    suspend fun addNewPlayList(playListName: String): Resource<Boolean>
 
     suspend fun getListOfPlayLists():Resource<List<String>>
 
