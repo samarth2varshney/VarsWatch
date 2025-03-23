@@ -3,6 +3,7 @@ package com.example.varswatch.youtube_shared_videos
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.varswatch.VideoPlayerActivity
 import com.example.varswatch.R
@@ -11,7 +12,7 @@ class SharedVideoReceiver : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_shared_video_receiver)
 
         val intent = getIntent()
         val sharedText = intent.getStringExtra(Intent.EXTRA_TEXT)
@@ -32,11 +33,12 @@ class SharedVideoReceiver : AppCompatActivity() {
 
             if(playlist){
                 val intent2 = Intent(this, PlaylistActivity::class.java)
-                intent2.putExtra("youtubelink",youtubelink)
+                intent2.putExtra("videoId",youtubelink)
                 startActivity(intent2)
             }else{
                 val intent2 = Intent(this, VideoPlayerActivity::class.java)
-                intent2.putExtra("youtubelink",youtubelink)
+                Log.i("SharedVideoReceiver",youtubelink)
+                intent2.putExtra("videoId",youtubelink)
                 startActivity(intent2)
             }
         }
