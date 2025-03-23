@@ -12,7 +12,7 @@ class VideosEpoxyController(
 ) : TypedEpoxyController<List<Item>>() {
 
     interface OnItemClickListener {
-        fun onItemClick(item: Item)
+        fun onItemClick(item: Item,saveToPlayList:Boolean=false)
     }
 
     override fun buildModels(data: List<Item>?) {
@@ -39,6 +39,10 @@ class VideosEpoxyController(
             channelName.text = item.snippet.channelTitle
 
             duration.text = convert(item.contentDetails.duration)
+
+            saveButton.setOnClickListener {
+                itemClickListener.onItemClick(item,saveToPlayList = true)
+            }
 
             root.setOnClickListener {
                 itemClickListener.onItemClick(item)

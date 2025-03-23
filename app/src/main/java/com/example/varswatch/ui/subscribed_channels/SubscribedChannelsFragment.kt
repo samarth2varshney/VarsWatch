@@ -42,6 +42,8 @@ class SubscribedChannelsFragment : VarsFragment(), ChannelsEpoxyController.OnIte
 
         if(videoInfo.isEmpty()){
             binding.subscribeText.visibility = View.VISIBLE
+        }else{
+            binding.subscribeText.visibility = View.GONE
         }
 
         binding.apply {

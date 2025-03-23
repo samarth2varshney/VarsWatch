@@ -21,17 +21,17 @@
 
     <TextView
         android:id="@+id/thumbnail"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:ellipsize="end"
         android:maxLines="2"
-        android:text="TextView"
+        android:text="Malan sajna (Video) sachet tandon, Paramapra Tandon Adi Shaikh, Kumar"
         android:textColor="@color/black"
         android:textSize="15dp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/thumnailPicture" />
 
     <TextView
@@ -77,6 +77,6 @@
         android:text="Button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/thumnailPicture" />
+        app:layout_constraintTop_toBottomOf="@+id/thumbnail" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -65,7 +65,7 @@ class PlayListVideosFragment : Fragment(), VideosEpoxyController.OnItemClickList
          }
     }
 
-    override fun onItemClick(item: Item) {
+    override fun onItemClick(item: Item, saveToPlayList: Boolean) {
         (activity as? MainActivity)?.openPlayer(item)
     }
 }

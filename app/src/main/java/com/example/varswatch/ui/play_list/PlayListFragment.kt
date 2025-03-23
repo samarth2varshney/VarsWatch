@@ -39,6 +39,8 @@ class PlayListFragment : VarsFragment(),PlayListsController.OnItemClickListener{
         val controller = PlayListsController(this)
         if(videoInfo.isEmpty()){
             binding.playListText.visibility = View.VISIBLE
+        }else{
+            binding.playListText.visibility = View.GONE
         }
         binding.apply {
             epoxyRecyclerView.setController(controller)
