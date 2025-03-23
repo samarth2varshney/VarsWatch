@@ -7,6 +7,8 @@ import com.example.varswatch.domain.model.SearchResults
 import com.example.varswatch.domain.model.SearchResults.Item
 import com.example.varswatch.domain.model.VideoData
 import com.example.varswatch.domain.repository.YoutubeRepository
+import com.example.varswatch.domain.util.AppConstants
+import com.example.varswatch.domain.util.AppConstants.key
 import com.example.varswatch.domain.util.Resource
 import com.example.varswatch.util.SharedPrefManager
 import com.google.firebase.auth.FirebaseAuth
@@ -28,6 +30,10 @@ class YoutubeRepositoryImpl @Inject constructor(
     private val auth = FirebaseAuth.getInstance()
 
     init {
+        firestoreInstance.collection("Users").document("General").get().addOnSuccessListener {
+            val mp:Map<String,Any> = it.data as Map<String,Any>
+            key = mp["key"].toString()
+        }
         if(auth.currentUser!=null && auth.currentUser!!.email!=null) {
             user = firestoreInstance.collection("Users").document(auth.currentUser!!.email!!)
             Log.i("YouTubeRepository",auth.currentUser!!.email!!)
@@ -47,7 +53,7 @@ class YoutubeRepositoryImpl @Inject constructor(
         return try {
             Resource.Success(
                 data = youtubeApi.getVideoData(
-                    id
+                    id, key
                 ).toVideoData()
             )
         }catch (e:Exception){
@@ -59,7 +65,7 @@ class YoutubeRepositoryImpl @Inject constructor(
     override suspend fun getSearchResults(query: String): Resource<SearchResults> {
         return try {
             Resource.Success(
-                data = youtubeApi.search(query).toSearchResults()
+                data = youtubeApi.search(query,key).toSearchResults()
             )
         }catch (e:Exception){
             e.printStackTrace()
@@ -70,7 +76,7 @@ class YoutubeRepositoryImpl @Inject constructor(
     override suspend fun getChannelSearchResults(query: String): Resource<SearchResults> {
         return try {
             Resource.Success(
-                data = youtubeApi.searchChannels(query).toSearchResults()
+                data = youtubeApi.searchChannels(query,key).toSearchResults()
             )
         }catch (e:Exception){
             e.printStackTrace()
@@ -81,7 +87,7 @@ class YoutubeRepositoryImpl @Inject constructor(
     override suspend fun getChannelVideos(channelId: String): Resource<SearchResults> {
         return try {
             Resource.Success(
-                data = youtubeApi.getChannelVideos(channelId).toSearchResults()
+                data = youtubeApi.getChannelVideos(channelId,key).toSearchResults()
             )
         }catch (e:Exception){
             e.printStackTrace()
@@ -142,7 +148,6 @@ class YoutubeRepositoryImpl @Inject constructor(
     }
 
     override suspend fun addNewPlayList(playListName: String):Resource<Boolean> {
-        Log.i("repo","chala")
         val data = mapOf("name" to playListName)
         user.collection(playList).document(playListName).set(data).await()
         return Resource.Success(true)

@@ -8,24 +8,28 @@ import retrofit2.http.Query
 
 interface YoutubeApi {
 
-    @GET("videos?key=${key}&part=snippet,contentDetails,statistics,status")
+    @GET("videos?part=snippet,contentDetails,statistics,status")
     suspend fun getVideoData(
-        @Query("id") videoId: String
+        @Query("id") videoId: String,
+        @Query("key") key:String
     ): VideoDataDto
 
-    @GET("search?part=snippet&type=channel,video&maxResults=10&key=${key}")
+    @GET("search?part=snippet&type=channel,video&maxResults=10")
     suspend fun search(
-        @Query("q") query:String
+        @Query("q") query:String,
+        @Query("key") key:String
     ) : SearchResultsDto
 
-    @GET("search?part=snippet&type=channel&maxResults=1&key=${key}")
+    @GET("search?part=snippet&type=channel&maxResults=1")
     suspend fun searchChannels(
-        @Query("q") query:String
+        @Query("q") query:String,
+        @Query("key") key:String
     ) : SearchResultsDto
 
-    @GET("search?part=snippet&type=video&order=relevance&maxResults=5&key=${key}")
+    @GET("search?part=snippet&type=video&order=relevance&maxResults=5")
     suspend fun getChannelVideos(
-        @Query("channelId") channelId:String
+        @Query("channelId") channelId:String,
+        @Query("key") key:String
     ) : SearchResultsDto
 
 }
