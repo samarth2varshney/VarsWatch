@@ -44,6 +44,10 @@ class HistoryFragment : VarsFragment(), VideosEpoxyController.OnItemClickListene
     private fun initialize(videoInfo: List<Item>) {
         val controller = VideosEpoxyController(this)
 
+        if(videoInfo.isEmpty()){
+            binding.subscribeText.visibility = View.VISIBLE
+        }
+
         binding.apply {
             epoxyRecyclerView.setController(controller)
             controller.setData(videoInfo)

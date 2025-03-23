@@ -14,7 +14,6 @@ import com.example.varswatch.domain.repository.YoutubeRepository
 import com.example.varswatch.util.SharedData.Array
 import com.example.varswatch.util.SharedData.getVideoInfoList
 import com.example.varswatch.util.SharedData.mp
-import com.example.varswatch.util.getNotificationPermission
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -59,8 +58,6 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
-        getNotificationPermission {}
 
     }
 

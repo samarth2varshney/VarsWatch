@@ -51,7 +51,7 @@ class HomeFragment : VarsFragment(), VideosEpoxyController.OnItemClickListener {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) {
-                    sumbit(query)
+                    submit(query)
                 }
 
                 return true
@@ -65,13 +65,18 @@ class HomeFragment : VarsFragment(), VideosEpoxyController.OnItemClickListener {
         return root
     }
 
-    private fun sumbit(query: String) {
+    private fun submit(query: String) {
         SharedData.query = query
         val controller = findNavController()
         controller.navigate(R.id.searchFragment)
     }
 
     private fun initialize(videoInfo: List<Item>) {
+
+        if(videoInfo.isEmpty()){
+            binding.subscribeText.visibility = View.VISIBLE
+        }
+
         val controller = VideosEpoxyController(this)
 
         binding.apply {
@@ -93,7 +98,4 @@ class HomeFragment : VarsFragment(), VideosEpoxyController.OnItemClickListener {
         }
     }
 
-//    override fun onEmailEntered(email: String) {
-//        viewModel.createNewUser(email)
-//    }
 }

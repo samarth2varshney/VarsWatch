@@ -20,10 +20,6 @@ class PlayListFragment : VarsFragment(),PlayListsController.OnItemClickListener{
 
     private val viewModel: PlayListViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,7 +37,9 @@ class PlayListFragment : VarsFragment(),PlayListsController.OnItemClickListener{
 
     private fun initialize(videoInfo: List<String>){
         val controller = PlayListsController(this)
-
+        if(videoInfo.isEmpty()){
+            binding.playListText.visibility = View.VISIBLE
+        }
         binding.apply {
             epoxyRecyclerView.setController(controller)
             controller.setData(videoInfo)

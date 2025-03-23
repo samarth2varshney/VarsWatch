@@ -38,7 +38,11 @@ class SubscribedChannelsFragment : VarsFragment(), ChannelsEpoxyController.OnIte
     }
 
     private fun initialize(videoInfo: List<Item>) {
-        val controller = ChannelsEpoxyController(this)
+        val controller = ChannelsEpoxyController(this,true)
+
+        if(videoInfo.isEmpty()){
+            binding.subscribeText.visibility = View.VISIBLE
+        }
 
         binding.apply {
             epoxyRecyclerView.setController(controller)

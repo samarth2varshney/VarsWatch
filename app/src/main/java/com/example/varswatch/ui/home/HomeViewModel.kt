@@ -29,8 +29,8 @@ class HomeViewModel  @Inject constructor(
 
                 }
                 is Resource.Success -> {
+                    _videoInfo.value = emptyList()
                     result.data?.forEach {
-                        _videoInfo.value = emptyList()
                         getChannelVideos(it.id.channelId)
                     }
                 }

@@ -33,7 +33,7 @@ open class VarsFragment:Fragment(){
     private val signIn: ActivityResultLauncher<Intent> =
         registerForActivityResult(FirebaseAuthUIActivityResultContract(), this::onSignInResult)
 
-    protected val auth = FirebaseAuth.getInstance()
+    private val auth = FirebaseAuth.getInstance()
 
     override fun onStart() {
         super.onStart()
@@ -44,6 +44,19 @@ open class VarsFragment:Fragment(){
         AuthUI.getInstance().signOut(requireContext()).addOnSuccessListener {
             checkUserStatus()
         }
+    }
+
+    private fun checkNotification(success:()->Unit){
+        PermissionX.init(this).permissions(android.Manifest.permission.POST_NOTIFICATIONS)
+            .request{allGranted,_,_ ->
+
+                if(allGranted){
+                    success()
+                }else{
+                    Toast.makeText(requireContext(), "Notification permission required to control player from it", Toast.LENGTH_SHORT).show()
+                }
+
+            }
     }
 
     private fun checkUserStatus(){
@@ -62,6 +75,7 @@ open class VarsFragment:Fragment(){
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
         if (result.resultCode == RESULT_OK) {
             Log.d(TAG, "Sign in successful!")
+            checkNotification {  }
             refreshActivity()
         } else {
             Toast.makeText(requireContext(), "You have to sign in to use this app", Toast.LENGTH_LONG).show()

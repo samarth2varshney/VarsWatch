@@ -18,20 +18,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.varswatch.data.remote.video_info
-import com.example.varswatch.domain.model.SearchResults.Item
-import com.example.varswatch.domain.repository.YoutubeRepository
 import com.example.varswatch.notification_module.YouTubePlayerService
 import com.example.varswatch.util.SharedData
 import com.example.varswatch.util.SharedData.mp
 import com.example.varswatch.util.SharedData.saveVideoInfoList
+import com.example.varswatch.util.getNotificationPermission
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class VideoPlayerActivity : AppCompatActivity() {
 
@@ -67,6 +61,8 @@ class VideoPlayerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_custom_ui)
+
+        getNotificationPermission {  }
 
         videoId = intent.getStringExtra("videoId").toString()
         val youtubeTitle = intent.getStringExtra("videoTitle")
